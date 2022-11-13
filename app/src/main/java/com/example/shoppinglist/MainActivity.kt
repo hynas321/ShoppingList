@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var customAdapter: CustomAdapter
+    private lateinit var shoppingListsAdapter: ShoppingListsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
 
@@ -15,23 +15,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         linearLayoutManager = LinearLayoutManager(this)
-        customAdapter = CustomAdapter(getItemsList())
-        recyclerView = findViewById(R.id.main_recycler_view)
+        shoppingListsAdapter = ShoppingListsAdapter(getShoppingLists())
+        recyclerView = findViewById(R.id.main_recyclerView_shopping_list)
 
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = customAdapter
+        recyclerView.adapter = shoppingListsAdapter
 
-        customAdapter.notifyDataSetChanged()
+        //shoppingListsAdapter.notifyDataSetChanged()
 
     }
 
-    private fun getItemsList(): ArrayList<String> {
-        val list = ArrayList<String>()
+    private fun getShoppingLists(): ArrayList<ShoppingListModel> {
+        val list = ArrayList<ShoppingListModel>()
 
-        for (i in 1..15) {
-            list.add("Item $i")
-        }
-
+        list.add(ShoppingListModel(
+            R.drawable.ic_launcher_background, "a", R.drawable.ic_launcher_foreground)
+        )
+        list.add(ShoppingListModel(
+            R.drawable.ic_launcher_background, "b", R.drawable.ic_launcher_foreground)
+        )
+        list.add(ShoppingListModel(
+            R.drawable.ic_launcher_background, "c", R.drawable.ic_launcher_foreground)
+        )
         return list
     }
 }
