@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
@@ -10,24 +11,25 @@
 
     <ImageView
         android:id="@+id/shopping_list_item_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="62dp"
+        android:layout_height="56dp"
         android:contentDescription="@string/app_name"
+        android:padding="10dp"
         android:src="@mipmap/ic_launcher"
-        android:padding="10dp"/>
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/shopping_list_item_textView_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="221dp"
+        android:layout_height="56dp"
         android:text="aaa"
-        android:textSize="@dimen/textView_title_textSize"/>
+        android:textSize="@dimen/textView_title_textSize" />
 
     <ImageView
         android:id="@+id/shopping_list_item_delete_icon"
-        android:layout_width="95dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/trash_bin_icon" />
 
 </LinearLayout>
