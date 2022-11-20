@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     .setAction(
                         "Undo",
                         View.OnClickListener {
-                            shoppingListModels.add(item.groupId, removedItem)
+                            shoppingListModels.add(item.itemId, removedItem)
 
                             shoppingListsAdapter.notifyItemInserted(item.itemId)
                         }).show()
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     .setAction(
                         "Undo",
                         View.OnClickListener {
-                            shoppingListModels.add(item.groupId + 1, copiedItem)
+                            shoppingListModels.add(item.itemId + 1, copiedItem)
 
                             shoppingListsAdapter.notifyItemInserted(item.itemId)
                         }).show()
