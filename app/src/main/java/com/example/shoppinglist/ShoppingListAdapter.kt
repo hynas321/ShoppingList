@@ -1,7 +1,9 @@
 package com.example.shoppinglist
 
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnCreateContextMenuListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,24 +15,32 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
     private lateinit var listener: ItemEventListener
 
     inner class ShoppingListViewHolder(itemView: View, listener: ItemEventListener)
-        : RecyclerView.ViewHolder(itemView){
+        : RecyclerView.ViewHolder(itemView), OnCreateContextMenuListener{
 
         val shoppingListIcon: ImageView
         val shoppingListName: TextView
-        val shoppingListDeleteIcon: ImageView
+        val shoppingListExtensionIcon: ImageView
 
         init {
             shoppingListIcon = itemView.findViewById(R.id.shopping_list_item_icon)
             shoppingListName = itemView.findViewById(R.id.shopping_list_item_textView_name)
-            shoppingListDeleteIcon = itemView.findViewById(R.id.shopping_list_item_delete_icon)
+            shoppingListExtensionIcon = itemView.findViewById(R.id.shopping_list_item_ellipsis_icon)
 
             itemView.setOnClickListener {
                 listener.onClick(adapterPosition)
             }
 
-            shoppingListDeleteIcon.setOnClickListener {
-                listener.onDeleteClick(adapterPosition)
-            }
+            itemView.setOnCreateContextMenuListener(this)
+        }
+
+        override fun onCreateContextMenu(
+            menu: ContextMenu?,
+            view: View?,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
+            menu?.setHeaderTitle("Select shopping list action")
+            menu?.add(R.id.shopping_list_menu_delete, adapterPosition, 0, "Delete")
+            menu?.add(R.id.shopping_list_menu_copy, adapterPosition, 1, "Copy")
         }
     }
 
@@ -50,7 +60,7 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
 
         holder.shoppingListName.text = shoppingListModel.name
         holder.shoppingListIcon.setImageResource(shoppingListModel.iconImageViewId)
-        holder.shoppingListDeleteIcon.setImageResource(shoppingListModel.deleteIconImageViewId)
+        holder.shoppingListExtensionIcon.setImageResource(shoppingListModel.extensionIcon)
     }
 
     override fun getItemCount() = shoppingListModels.size
