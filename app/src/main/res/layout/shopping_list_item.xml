@@ -18,14 +18,14 @@
 
     <TextView
         android:id="@+id/shopping_list_item_textView_name"
-        android:layout_width="220dp"
+        android:layout_width="234dp"
         android:layout_height="wrap_content"
         android:text="aaa"
         android:textSize="@dimen/textView_title_textSize" />
 
     <ImageView
         android:id="@+id/shopping_list_item_ellipsis_icon"
-        android:layout_width="108dp"
+        android:layout_width="89dp"
         android:layout_height="45dp"
         android:layout_weight="1"
         app:srcCompat="@drawable/ellipsis" />

@@ -15,7 +15,7 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
     private lateinit var listener: ItemEventListener
 
     inner class ShoppingListViewHolder(itemView: View, listener: ItemEventListener)
-        : RecyclerView.ViewHolder(itemView), OnCreateContextMenuListener{
+        : RecyclerView.ViewHolder(itemView) {
 
         val shoppingListIcon: ImageView
         val shoppingListName: TextView
@@ -30,17 +30,9 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
                 listener.onClick(adapterPosition)
             }
 
-            itemView.setOnCreateContextMenuListener(this)
-        }
-
-        override fun onCreateContextMenu(
-            menu: ContextMenu?,
-            view: View?,
-            menuInfo: ContextMenu.ContextMenuInfo?
-        ) {
-            menu?.setHeaderTitle("Select shopping list action")
-            menu?.add(R.id.shopping_list_menu_delete, adapterPosition, 0, "Delete")
-            menu?.add(R.id.shopping_list_menu_copy, adapterPosition, 1, "Copy")
+            shoppingListExtensionIcon.setOnClickListener {
+                listener.onCreateMenuClick(adapterPosition)
+            }
         }
     }
 

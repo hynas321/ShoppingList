@@ -3,15 +3,17 @@ package com.example.shoppinglist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MenuItem.OnMenuItemClickListener
 import android.view.View
 import android.widget.Button
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
     private lateinit var shoppingListsAdapter: ShoppingListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -21,9 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_shopping_list)
 
-        val context: MainActivity = this
+        val context: ShoppingListActivity = this
 
         linearLayoutManager = LinearLayoutManager(this)
         shoppingListsAdapter = ShoppingListAdapter(shoppingListModels)
@@ -49,12 +51,24 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("id", "1")
                 startActivity(intent)
             }
+
+            override fun onCreateMenuClick(position: Int) {
+                //showPopup()
+            }
         }
 
         shoppingListsAdapter.setOnItemClickListener(onItemClickListener)
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
+    fun showPopup(view: View) {
+        val popup = PopupMenu(this, view)
+        val inflater: MenuInflater = popup.menuInflater
+
+        inflater.inflate(R.menu.shopping_list_menu, popup.menu)
+        popup.show()
+    }
+
+    override fun onMenuItemClick (item: MenuItem): Boolean {
 
         when (item.groupId) {
 
@@ -69,7 +83,6 @@ class MainActivity : AppCompatActivity() {
                         "Undo",
                         View.OnClickListener {
                             shoppingListModels.add(item.itemId, removedItem)
-
                             shoppingListsAdapter.notifyItemInserted(item.itemId)
                         }).show()
 
@@ -81,15 +94,6 @@ class MainActivity : AppCompatActivity() {
 
                 shoppingListModels.add(item.itemId, copiedItem)
                 shoppingListsAdapter.notifyItemInserted(item.itemId)
-
-                Snackbar.make(recyclerView, "Copied " + copiedItem.name, Snackbar.LENGTH_LONG)
-                    .setAction(
-                        "Undo",
-                        View.OnClickListener {
-                            shoppingListModels.add(item.itemId + 1, copiedItem)
-
-                            shoppingListsAdapter.notifyItemInserted(item.itemId)
-                        }).show()
 
                 return true
             }
