@@ -1,11 +1,9 @@
 package com.example.shoppinglist
 
-import android.view.ContextMenu
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.OnCreateContextMenuListener
-import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -31,7 +29,7 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
             }
 
             shoppingListExtensionIcon.setOnClickListener {
-                listener.onCreateMenuClick(adapterPosition)
+
             }
         }
     }
@@ -52,7 +50,7 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
 
         holder.shoppingListName.text = shoppingListModel.name
         holder.shoppingListIcon.setImageResource(shoppingListModel.iconImageViewId)
-        holder.shoppingListExtensionIcon.setImageResource(shoppingListModel.extensionIcon)
+        holder.shoppingListExtensionIcon.setImageResource(R.drawable.ellipsis)
     }
 
     override fun getItemCount() = shoppingListModels.size

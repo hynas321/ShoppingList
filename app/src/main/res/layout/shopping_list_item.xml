@@ -20,6 +20,7 @@
         android:id="@+id/shopping_list_item_textView_name"
         android:layout_width="234dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
         android:text="aaa"
         android:textSize="@dimen/textView_title_textSize" />
 

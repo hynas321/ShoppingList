@@ -1,4 +1,4 @@
-package com.example.shoppinglist
+package com.example.shoppinglist.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.shoppinglist.R
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var usernameEditText: EditText

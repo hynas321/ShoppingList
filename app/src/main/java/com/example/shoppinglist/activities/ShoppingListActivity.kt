@@ -1,4 +1,4 @@
-package com.example.shoppinglist
+package com.example.shoppinglist.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shoppinglist.*
 import com.google.android.material.snackbar.Snackbar
 
 class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
@@ -29,31 +30,27 @@ class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
 
         linearLayoutManager = LinearLayoutManager(this)
         shoppingListsAdapter = ShoppingListAdapter(shoppingListModels)
-        recyclerView = findViewById(R.id.main_recyclerView_shopping_list)
-        addListButton = findViewById(R.id.main_button_add_list)
+        recyclerView = findViewById(R.id.shopping_list_recyclerView_shopping_list)
+        addListButton = findViewById(R.id.shopping_list_button_add_list)
 
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = shoppingListsAdapter
 
         addListButton.setOnClickListener {
-            shoppingListModels.add(ShoppingListModel(
-                R.drawable.ic_launcher_background, "New Product", R.drawable.ellipsis)
+            shoppingListModels.add(
+                ShoppingListModel(
+                R.drawable.ic_launcher_background, "New Product")
             )
 
             shoppingListsAdapter.notifyItemInserted(shoppingListModels.size - 1)
         }
 
         val onItemClickListener = object : ItemEventListener {
-
             override fun onClick(position: Int) {
                 val intent = Intent(context, ProductListActivity::class.java)
 
                 intent.putExtra("id", "1")
                 startActivity(intent)
-            }
-
-            override fun onCreateMenuClick(position: Int) {
-                //showPopup()
             }
         }
 
@@ -69,7 +66,6 @@ class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
     }
 
     override fun onMenuItemClick (item: MenuItem): Boolean {
-
         when (item.groupId) {
 
             R.id.shopping_list_menu_delete -> {
@@ -105,15 +101,19 @@ class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
     private fun getShoppingLists(): ArrayList<ShoppingListModel> {
         val list = ArrayList<ShoppingListModel>()
 
-        list.add(ShoppingListModel(
-            R.drawable.ic_launcher_background, "Product 1", R.drawable.ellipsis)
+        list.add(
+            ShoppingListModel(
+            R.drawable.ic_launcher_background, "Shopping list 1")
         )
-        list.add(ShoppingListModel(
-            R.drawable.ic_launcher_background, "Product 2", R.drawable.ellipsis)
+        list.add(
+            ShoppingListModel(
+            R.drawable.ic_launcher_background, "Shopping list 2")
         )
-        list.add(ShoppingListModel(
-            R.drawable.ic_launcher_background, "Product 3", R.drawable.ellipsis)
+        list.add(
+            ShoppingListModel(
+            R.drawable.ic_launcher_background, "Shopping list 3")
         )
+
         return list
     }
 }

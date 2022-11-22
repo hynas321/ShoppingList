@@ -2,9 +2,8 @@ package com.example.shoppinglist
 
 import android.widget.ImageView
 
-class Product(
+class ProductModel(
+    var categoryImage: ImageView,
     var name: String,
     var quantity: Int,
-    var priceSum: Double,
-    var categoryImage: ImageView
 )

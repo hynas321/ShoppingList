@@ -4,7 +4,7 @@
 
     <!-- Main activity -->
     <string name="main_textView_title">Shopping lists</string>
-    <string name="main_button_add_list">Add list</string>
+    <string name="main_button_add_list">New list</string>
     <string name="main_linearLayout_product_name">Name</string>
     <string name="main_linearLayout_product_quantity">Quantity</string>
     <string name="main_linearLayout_product_price_sum">Price sum</string>
