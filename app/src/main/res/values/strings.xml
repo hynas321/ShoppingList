@@ -1,0 +1,8 @@
+<resources>
+    <!-- General -->
+    <string name="app_name">ShoppingList</string>
+
+    <!-- Main activity -->
+    <string name="main_textView_title">Shopping lists</string>
+    <string name="main_button_add_list">New list</string>
+</resources>
