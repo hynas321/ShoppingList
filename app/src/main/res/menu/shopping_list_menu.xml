@@ -5,9 +5,18 @@
     <item
         android:id="@+id/shopping_list_menu_delete"
         android:title="Delete"
+        android:src="@drawable/ic_shopping_cart"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/shopping_list_menu_rename"
+        android:title="Rename"
+        android:src="@drawable/ic_shopping_cart"
+        app:showAsAction="always"
+        />
     <item
         android:id="@+id/shopping_list_menu_copy"
         android:title="Copy"
+        android:src="@drawable/ic_shopping_cart"
         app:showAsAction="always" />
 </menu>

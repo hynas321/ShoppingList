@@ -6,7 +6,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.shoppinglist.ItemEventListener
 import com.example.shoppinglist.R
 import com.example.shoppinglist.product.ProductListAdapter
 import com.example.shoppinglist.product.ProductModel
