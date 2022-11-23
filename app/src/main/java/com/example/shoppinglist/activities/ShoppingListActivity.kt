@@ -1,7 +1,6 @@
 package com.example.shoppinglist.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -9,10 +8,15 @@ import android.view.MenuItem.OnMenuItemClickListener
 import android.view.View
 import android.widget.Button
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.shoppinglist.*
+import com.example.shoppinglist.ItemEventListener
+import com.example.shoppinglist.R
+import com.example.shoppinglist.shopping.ShoppingListAdapter
+import com.example.shoppinglist.shopping.ShoppingListModel
 import com.google.android.material.snackbar.Snackbar
+
 
 class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
     private lateinit var shoppingListsAdapter: ShoppingListAdapter
@@ -25,12 +29,13 @@ class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shopping_list)
+        overridePendingTransition(0, 0)
 
         val context: ShoppingListActivity = this
 
         linearLayoutManager = LinearLayoutManager(this)
         shoppingListsAdapter = ShoppingListAdapter(shoppingListModels)
-        recyclerView = findViewById(R.id.shopping_list_recyclerView_shopping_list)
+        recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addListButton = findViewById(R.id.shopping_list_button_add_list)
 
         recyclerView.layoutManager = linearLayoutManager
@@ -39,7 +44,7 @@ class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
         addListButton.setOnClickListener {
             shoppingListModels.add(
                 ShoppingListModel(
-                R.drawable.ic_launcher_background, "New Product")
+                R.drawable.ic_launcher_background, "New shopping list")
             )
 
             shoppingListsAdapter.notifyItemInserted(shoppingListModels.size - 1)
@@ -103,17 +108,21 @@ class ShoppingListActivity : AppCompatActivity(), OnMenuItemClickListener {
 
         list.add(
             ShoppingListModel(
-            R.drawable.ic_launcher_background, "Shopping list 1")
+            R.drawable.ic_shopping_cart, "Shopping list 1")
         )
         list.add(
             ShoppingListModel(
-            R.drawable.ic_launcher_background, "Shopping list 2")
+            R.drawable.ic_shopping_cart, "Shopping list 2")
         )
         list.add(
             ShoppingListModel(
-            R.drawable.ic_launcher_background, "Shopping list 3")
+            R.drawable.ic_shopping_cart, "Shopping list 3")
         )
 
         return list
+    }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true);
     }
 }

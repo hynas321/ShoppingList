@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.ProductListActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/shopping_list_toolbar"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:layout_height="55dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Products"
-            android:textSize="32sp"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:id="@+id/toolbar_title" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/product_list_recyclerView_product"
+        android:layout_width="356dp"
+        android:layout_height="568dp"
+        app:layout_constraintBottom_toTopOf="@+id/product_list_button_add_product"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
 
-    </androidx.appcompat.widget.Toolbar>
+    <Button
+        android:id="@+id/product_list_button_add_product"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="New product"
+        android:textSize="@dimen/button_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/custom_navigation_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.500"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include
+        android:id="@+id/custom_navigation_bar"
+        layout="@layout/custom_navigation_bar"
+        android:layout_width="393dp"
+        android:layout_height="67dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

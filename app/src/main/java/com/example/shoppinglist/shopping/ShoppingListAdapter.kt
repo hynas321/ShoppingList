@@ -1,11 +1,11 @@
-package com.example.shoppinglist
+package com.example.shoppinglist.shopping
 
 import android.view.*
-import android.view.View.OnCreateContextMenuListener
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shoppinglist.ItemEventListener
+import com.example.shoppinglist.R
 
 class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingListModel>)
     : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
@@ -20,9 +20,9 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
         val shoppingListExtensionIcon: ImageView
 
         init {
-            shoppingListIcon = itemView.findViewById(R.id.shopping_list_item_icon)
-            shoppingListName = itemView.findViewById(R.id.shopping_list_item_textView_name)
-            shoppingListExtensionIcon = itemView.findViewById(R.id.shopping_list_item_ellipsis_icon)
+            shoppingListIcon = itemView.findViewById(R.id.imageView_icon)
+            shoppingListName = itemView.findViewById(R.id.textView_name)
+            shoppingListExtensionIcon = itemView.findViewById(R.id.imageView_vertical_dots_icon)
 
             itemView.setOnClickListener {
                 listener.onClick(adapterPosition)
@@ -50,7 +50,7 @@ class ShoppingListAdapter(private val shoppingListModels: ArrayList<ShoppingList
 
         holder.shoppingListName.text = shoppingListModel.name
         holder.shoppingListIcon.setImageResource(shoppingListModel.iconImageViewId)
-        holder.shoppingListExtensionIcon.setImageResource(R.drawable.ellipsis)
+        holder.shoppingListExtensionIcon.setImageResource(R.drawable.ic_vertical_dots)
     }
 
     override fun getItemCount() = shoppingListModels.size

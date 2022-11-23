@@ -18,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        overridePendingTransition(0, 0)
 
         usernameEditText = findViewById(R.id.login_editText_username)
         passwordEditText = findViewById(R.id.login_editText_password)
@@ -44,4 +45,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(true);
+    }
 }

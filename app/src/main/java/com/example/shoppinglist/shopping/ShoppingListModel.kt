@@ -1,4 +1,4 @@
-package com.example.shoppinglist
+package com.example.shoppinglist.shopping
 
 class ShoppingListModel(
     val iconImageViewId: Int,
