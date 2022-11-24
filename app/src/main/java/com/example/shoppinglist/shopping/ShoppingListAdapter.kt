@@ -1,15 +1,22 @@
 package com.example.shoppinglist.shopping
 
+import android.app.AlertDialog.Builder
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.text.InputType
 import android.view.*
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.marginLeft
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.activities.ProductListActivity
+import com.google.android.material.snackbar.Snackbar
 
 
 class ShoppingListAdapter(
@@ -39,14 +46,41 @@ class ShoppingListAdapter(
         }
     }
 
-    fun openProductListActivity() {
+    fun createItemAlertDialog() {
+        val builder = Builder(context)
+        val input = EditText(context)
+
+        builder.setTitle("Set name of your new shopping list")
+        input.setHint("Enter Text")
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK", DialogInterface.OnClickListener
+        {
+                dialog, which ->
+            val name = input.text.toString()
+            val newModel = ShoppingListModel(R.id.imageView_icon, name)
+
+            shoppingListModels.add(newModel)
+            notifyItemInserted(shoppingListModels.size - 1)
+        })
+
+        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener
+        {
+                dialog, which -> dialog.cancel()
+        })
+
+        builder.show()
+    }
+
+    private fun openProductListActivity() {
         val intent = Intent(context, ProductListActivity::class.java)
 
         intent.putExtra("id", "1")
         startActivity(context, intent, null)
     }
 
-    fun showPopup(itemView: View, position: Int) {
+    private fun showPopup(itemView: View, position: Int) {
         val popup = PopupMenu(context, itemView)
         val inflater: MenuInflater = popup.menuInflater
 
@@ -54,31 +88,83 @@ class ShoppingListAdapter(
         popup.show()
 
         popup.setOnMenuItemClickListener { item ->
-            onMenuItemClick(item, position)
+            onMenuItemClick(item, itemView, position)
         }
     }
 
-    private fun onMenuItemClick (item: MenuItem, position: Int): Boolean {
+    private fun onMenuItemClick (item: MenuItem, itemView: View, position: Int): Boolean {
         when (item.itemId) {
 
             R.id.shopping_list_menu_delete -> {
-                shoppingListModels.removeAt(position)
-                notifyItemRemoved(position)
+                val removedItem = shoppingListModels[position]
 
+                removeItem(position)
+
+                Snackbar
+                    .make(itemView, "Deleted " + removedItem.name, Snackbar.LENGTH_LONG)
+                    .setAction("Undo", View.OnClickListener { insertItem(position, removedItem) })
+                    .show()
+
+                return true
+            }
+
+            R.id.shopping_list_menu_rename -> {
+
+                changeNameAlertDialog(position)
                 return true
             }
 
             R.id.shopping_list_menu_copy -> {
                 val copiedItem = shoppingListModels[position]
+                val copiedItemPosition = position + 1
 
-                shoppingListModels.add(position + 1, copiedItem)
-                notifyItemInserted(position + 1)
+                shoppingListModels.add(copiedItemPosition, copiedItem)
+                notifyItemInserted(copiedItemPosition)
+
+                Snackbar
+                    .make(itemView, "Copied " + copiedItem.name, Snackbar.LENGTH_LONG)
+                    .setAction("Undo", View.OnClickListener { removeItem(copiedItemPosition) })
+                    .show()
 
                 return true
             }
 
             else -> return false
         }
+    }
+
+    private fun changeNameAlertDialog(position: Int) {
+        val builder = Builder(context)
+        val input = EditText(context)
+        val shoppingListModel = shoppingListModels[position]
+
+        builder.setTitle("Rename \"${shoppingListModel.name}\" shopping list")
+        input.setHint("Enter Text")
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK", DialogInterface.OnClickListener
+        {
+            dialog, which -> shoppingListModel.name = input.text.toString()
+            notifyItemChanged(position)
+        })
+
+        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener
+        {
+            dialog, which -> dialog.cancel()
+        })
+
+        builder.show()
+    }
+
+    private fun insertItem(position: Int, model: ShoppingListModel) {
+        shoppingListModels.add(position, model)
+        notifyItemInserted(position)
+    }
+
+    private fun removeItem(position: Int) {
+        shoppingListModels.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {
@@ -92,7 +178,7 @@ class ShoppingListAdapter(
         val shoppingListModel = shoppingListModels[position]
 
         holder.shoppingListName.text = shoppingListModel.name
-        holder.shoppingListIcon.setImageResource(shoppingListModel.iconImageViewId)
+        holder.shoppingListIcon.setImageResource(R.drawable.ic_shopping_cart)
         holder.shoppingListExtensionIcon.setImageResource(R.drawable.ic_vertical_dots)
 
     }

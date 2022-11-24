@@ -23,10 +23,8 @@ class ProductListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product_list)
         overridePendingTransition(0, 0)
 
-        val context: ProductListActivity = this
-
         linearLayoutManager = LinearLayoutManager(this)
-        productListAdapter = ProductListAdapter(productModels)
+        productListAdapter = ProductListAdapter(this, productModels)
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addProductButton = findViewById(R.id.product_list_button_add_product)
 
@@ -34,13 +32,7 @@ class ProductListActivity : AppCompatActivity() {
         recyclerView.adapter = productListAdapter
 
         addProductButton.setOnClickListener {
-            productModels.add(
-                ProductModel(
-                    R.drawable.ic_launcher_background, "New shopping list", "5"
-                )
-            )
-
-            productListAdapter.notifyItemInserted(productModels.size - 1)
+            productListAdapter.createItemAlertDialog()
         }
     }
 

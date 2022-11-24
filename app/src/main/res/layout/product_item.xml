@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/textView_name"
-        android:layout_width="192dp"
+        android:layout_width="186dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10sp"
         android:text="Product"
@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/imageView_vertical_dots_icon"
-        android:layout_width="89dp"
-        android:layout_height="45dp"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
         android:layout_marginLeft="10sp"
         app:srcCompat="@drawable/ic_vertical_dots" />

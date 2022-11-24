@@ -1,6 +1,6 @@
 package com.example.shoppinglist.shopping
 
 class ShoppingListModel(
-    val iconImageViewId: Int,
-    val name: String
+    var iconImageViewId: Int,
+    var name: String
 )

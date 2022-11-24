@@ -11,7 +11,7 @@ import com.example.shoppinglist.shopping.ShoppingListModel
 
 
 class ShoppingListActivity : AppCompatActivity() {
-    private lateinit var shoppingListsAdapter: ShoppingListAdapter
+    private lateinit var shoppingListAdapter: ShoppingListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var addListButton: Button
@@ -23,23 +23,16 @@ class ShoppingListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_shopping_list)
         overridePendingTransition(0, 0)
 
-        val context: ShoppingListActivity = this
-
         linearLayoutManager = LinearLayoutManager(this)
-        shoppingListsAdapter = ShoppingListAdapter(this, shoppingListModels)
+        shoppingListAdapter = ShoppingListAdapter(this, shoppingListModels)
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addListButton = findViewById(R.id.shopping_list_button_add_list)
 
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = shoppingListsAdapter
+        recyclerView.adapter = shoppingListAdapter
 
         addListButton.setOnClickListener {
-            shoppingListModels.add(
-                ShoppingListModel(
-                R.drawable.ic_launcher_background, "New shopping list")
-            )
-
-            shoppingListsAdapter.notifyItemInserted(shoppingListModels.size - 1)
+            shoppingListAdapter.createItemAlertDialog()
         }
     }
 
