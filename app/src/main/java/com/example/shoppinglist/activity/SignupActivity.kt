@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.shoppinglist.*
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.UserModel
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 
 class SignupActivity: AppCompatActivity()  {
     private lateinit var databaseManager: DatabaseManager
