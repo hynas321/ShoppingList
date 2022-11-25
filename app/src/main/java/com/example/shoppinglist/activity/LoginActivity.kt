@@ -1,4 +1,4 @@
-package com.example.shoppinglist.activities
+package com.example.shoppinglist.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
+    private lateinit var signupButton: Button
+    private lateinit var offlineButton: Button
     private lateinit var editTextsWatcher: TextWatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +24,9 @@ class LoginActivity : AppCompatActivity() {
 
         usernameEditText = findViewById(R.id.login_editText_username)
         passwordEditText = findViewById(R.id.login_editText_password)
-        loginButton = findViewById(R.id.login_button)
+        loginButton = findViewById(R.id.login_button_login)
+        signupButton = findViewById(R.id.login_button_signup)
+        offlineButton = findViewById(R.id.login_button_offline)
 
         editTextsWatcher = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -39,6 +43,18 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText.addTextChangedListener(editTextsWatcher)
 
         loginButton.setOnClickListener {
+            val intent = Intent(this, ShoppingListActivity::class.java)
+
+            startActivity(intent)
+        }
+
+        signupButton.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+
+            startActivity(intent)
+        }
+
+        offlineButton.setOnClickListener {
             val intent = Intent(this, ShoppingListActivity::class.java)
 
             startActivity(intent)

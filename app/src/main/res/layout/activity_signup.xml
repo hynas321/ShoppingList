@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.SignupActivity">
 
     <include
         android:id="@+id/include"
@@ -16,24 +16,40 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/login_editText_username"
+        android:id="@+id/signup_editText_email"
         android:layout_width="250dp"
         android:layout_height="70dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <EditText
+        android:id="@+id/signup_editText_username"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="144dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <EditText
-        android:id="@+id/login_editText_password"
+        android:id="@+id/signup_editText_password"
         android:layout_width="250dp"
         android:layout_height="70dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="32dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Password"
@@ -42,40 +58,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_editText_username" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_editText_username" />
 
     <Button
-        android:id="@+id/login_button_login"
+        android:id="@+id/signup_button"
         android:layout_width="175dp"
         android:layout_height="71dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="52dp"
         android:enabled="false"
-        android:text="Log in"
-        android:textSize="@dimen/button_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_editText_password" />
-
-    <Button
-        android:id="@+id/login_button_offline"
-        android:layout_width="175dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="32dp"
-        android:text="Continue offline"
-        android:textSize="@dimen/button_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_signup" />
-
-    <Button
-        android:id="@+id/login_button_signup"
-        android:layout_width="175dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="32dp"
         android:text="Sign up"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_login" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_editText_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

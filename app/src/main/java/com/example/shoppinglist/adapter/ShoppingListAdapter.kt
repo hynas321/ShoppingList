@@ -1,4 +1,4 @@
-package com.example.shoppinglist.shopping
+package com.example.shoppinglist.adapter
 
 import android.app.AlertDialog.Builder
 import android.content.Context
@@ -11,11 +11,10 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.marginLeft
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
-import com.example.shoppinglist.activities.ProductListActivity
+import com.example.shoppinglist.activity.ProductListActivity
+import com.example.shoppinglist.model.ShoppingListModel
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -59,7 +58,7 @@ class ShoppingListAdapter(
         {
                 dialog, which ->
             val name = input.text.toString()
-            val newModel = ShoppingListModel(R.id.imageView_icon, name)
+            val newModel = ShoppingListModel("A", "B", R.id.imageView_icon, name)
 
             shoppingListModels.add(newModel)
             notifyItemInserted(shoppingListModels.size - 1)
@@ -101,7 +100,7 @@ class ShoppingListAdapter(
                 removeItem(position)
 
                 Snackbar
-                    .make(itemView, "Deleted " + removedItem.name, Snackbar.LENGTH_LONG)
+                    .make(itemView, "Deleted " + removedItem.shoppingListName, Snackbar.LENGTH_LONG)
                     .setAction("Undo", View.OnClickListener { insertItem(position, removedItem) })
                     .show()
 
@@ -122,7 +121,7 @@ class ShoppingListAdapter(
                 notifyItemInserted(copiedItemPosition)
 
                 Snackbar
-                    .make(itemView, "Copied " + copiedItem.name, Snackbar.LENGTH_LONG)
+                    .make(itemView, "Copied " + copiedItem.shoppingListName, Snackbar.LENGTH_LONG)
                     .setAction("Undo", View.OnClickListener { removeItem(copiedItemPosition) })
                     .show()
 
@@ -138,14 +137,14 @@ class ShoppingListAdapter(
         val input = EditText(context)
         val shoppingListModel = shoppingListModels[position]
 
-        builder.setTitle("Rename \"${shoppingListModel.name}\" shopping list")
+        builder.setTitle("Rename \"${shoppingListModel.shoppingListName}\" shopping list")
         input.setHint("Enter Text")
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
         builder.setPositiveButton("OK", DialogInterface.OnClickListener
         {
-            dialog, which -> shoppingListModel.name = input.text.toString()
+            dialog, which -> shoppingListModel.shoppingListName = input.text.toString()
             notifyItemChanged(position)
         })
 
@@ -177,7 +176,7 @@ class ShoppingListAdapter(
     override fun onBindViewHolder(holder: ShoppingListViewHolder, position: Int) {
         val shoppingListModel = shoppingListModels[position]
 
-        holder.shoppingListName.text = shoppingListModel.name
+        holder.shoppingListName.text = shoppingListModel.shoppingListName
         holder.shoppingListIcon.setImageResource(R.drawable.ic_shopping_cart)
         holder.shoppingListExtensionIcon.setImageResource(R.drawable.ic_vertical_dots)
 

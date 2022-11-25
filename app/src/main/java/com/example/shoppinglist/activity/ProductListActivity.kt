@@ -1,4 +1,4 @@
-package com.example.shoppinglist.activities
+package com.example.shoppinglist.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
-import com.example.shoppinglist.product.ProductListAdapter
-import com.example.shoppinglist.product.ProductModel
+import com.example.shoppinglist.adapter.ProductListAdapter
+import com.example.shoppinglist.model.ProductModel
 
 class ProductListActivity : AppCompatActivity() {
     private lateinit var productListAdapter: ProductListAdapter
@@ -46,15 +46,15 @@ class ProductListActivity : AppCompatActivity() {
         val list = ArrayList<ProductModel>()
 
         list.add(
-            ProductModel(
+            ProductModel("A", "B",
                 R.drawable.ic_shopping_cart, "Product 1", "5")
         )
         list.add(
-            ProductModel(
+            ProductModel("A", "B",
                 R.drawable.ic_shopping_cart, "Product 2", "10")
         )
         list.add(
-            ProductModel(
+            ProductModel("A", "B",
                 R.drawable.ic_shopping_cart, "Product 3", "100")
         )
 

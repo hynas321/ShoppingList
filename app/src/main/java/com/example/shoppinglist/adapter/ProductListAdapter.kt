@@ -1,4 +1,4 @@
-package com.example.shoppinglist.product
+package com.example.shoppinglist.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -11,7 +11,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
-import com.example.shoppinglist.shopping.ShoppingListModel
+import com.example.shoppinglist.model.ProductModel
 import com.google.android.material.snackbar.Snackbar
 
 class ProductListAdapter(
@@ -60,7 +60,7 @@ class ProductListAdapter(
             dialog, which ->
             val name = inputName.text.toString()
             //val quantity = inputQuantity.text.toString()
-            val newModel = ProductModel(R.id.imageView_categoryIcon, name, "1")
+            val newModel = ProductModel("A", "B", R.id.imageView_categoryIcon, name, "1")
 
             productModels.add(newModel)
             notifyItemInserted(productModels.size - 1)
@@ -95,7 +95,7 @@ class ProductListAdapter(
                 removeItem(position)
 
                 Snackbar
-                    .make(itemView, "Deleted " + removedItem.name, Snackbar.LENGTH_LONG)
+                    .make(itemView, "Deleted " + removedItem.productName, Snackbar.LENGTH_LONG)
                     .setAction("Undo", View.OnClickListener { insertItem(position, removedItem) })
                     .show()
 
@@ -116,7 +116,7 @@ class ProductListAdapter(
                 notifyItemInserted(copiedItemPosition)
 
                 Snackbar
-                    .make(itemView, "Copied " + copiedItem.name, Snackbar.LENGTH_LONG)
+                    .make(itemView, "Copied " + copiedItem.productName, Snackbar.LENGTH_LONG)
                     .setAction("Undo", View.OnClickListener { removeItem(copiedItemPosition) })
                     .show()
 
@@ -132,7 +132,7 @@ class ProductListAdapter(
         val input = EditText(context)
         val productModel = productModels[position]
 
-        builder.setTitle("Rename \"${productModel.name}\" product")
+        builder.setTitle("Rename \"${productModel.productName}\" product")
 
         input.setHint("Enter Text")
         input.inputType = InputType.TYPE_CLASS_TEXT
@@ -141,7 +141,7 @@ class ProductListAdapter(
 
         builder.setPositiveButton("OK", DialogInterface.OnClickListener
         {
-            dialog, which -> productModel.name = input.text.toString()
+            dialog, which -> productModel.productName = input.text.toString()
             notifyItemChanged(position)
         })
 
@@ -174,7 +174,7 @@ class ProductListAdapter(
         val shoppingListModel = productModels[position]
 
         holder.productCategoryIcon.setImageResource(shoppingListModel.categoryIcon)
-        holder.productName.text = shoppingListModel.name
+        holder.productName.text = shoppingListModel.productName
         holder.productQuantity.text = shoppingListModel.quantity
     }
 
