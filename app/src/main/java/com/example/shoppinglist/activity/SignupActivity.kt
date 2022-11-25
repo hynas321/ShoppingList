@@ -5,12 +5,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shoppinglist.*
+import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.UserModel
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
 
 class SignupActivity: AppCompatActivity()  {
     private lateinit var databaseManager: DatabaseManager
@@ -22,6 +22,8 @@ class SignupActivity: AppCompatActivity()  {
     private lateinit var passwordEditText: EditText
     private lateinit var signupButton: Button
     private lateinit var editTextsWatcher: TextWatcher
+
+    val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +59,16 @@ class SignupActivity: AppCompatActivity()  {
                 passwordEditText.text.toString()
             )
 
-            val writeSuccessful = databaseManager.writeUser(userModel)
+            databaseManager.writeUserTask(userModel)
+                .addOnCompleteListener {
+                    Toast.makeText(context, "Welcome ${userModel.username}!", Toast.LENGTH_SHORT).show()
+                    activityManager.startActivityWithResources(userModel, ShoppingListActivity::class.java)
+                }.addOnCanceledListener {
+                    Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
+                }
 
-            if (writeSuccessful) {
-                activityManager.startActivityWithResources(userModel, ShoppingListActivity::class.java)
-            }
-            else {
-                activityManager.startActivityWithResources(userModel, LoginActivity::class.java)
-            }
         }
     }
 }

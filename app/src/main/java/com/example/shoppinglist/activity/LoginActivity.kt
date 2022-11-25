@@ -1,15 +1,28 @@
 package com.example.shoppinglist.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.R
+import com.example.shoppinglist.manager.DatabaseManager
+import com.example.shoppinglist.manager.InternetManager
+import com.example.shoppinglist.model.UserModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var databaseManager: DatabaseManager
+    //private lateinit var snackBarManager: SnackBarManager
+    private lateinit var activityManager: ActivityManager
+    private lateinit var internetManager: InternetManager
+
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
@@ -17,10 +30,16 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var offlineButton: Button
     private lateinit var editTextsWatcher: TextWatcher
 
+    val context = this
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         overridePendingTransition(0, 0)
+
+        databaseManager = DatabaseManager()
+        activityManager = ActivityManager(this)
+        internetManager = InternetManager(this)
 
         usernameEditText = findViewById(R.id.login_editText_username)
         passwordEditText = findViewById(R.id.login_editText_password)
@@ -43,22 +62,53 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText.addTextChangedListener(editTextsWatcher)
 
         loginButton.setOnClickListener {
-            val intent = Intent(this, ShoppingListActivity::class.java)
+            if (!internetManager.checkInternetConnection()) {
+                return@setOnClickListener
+            }
 
-            startActivity(intent)
+            logIn()
         }
 
         signupButton.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
+            if (!internetManager.checkInternetConnection()) {
+                return@setOnClickListener
+            }
 
-            startActivity(intent)
+            activityManager.startActivityWithResources(null, SignupActivity::class.java)
         }
 
         offlineButton.setOnClickListener {
-            val intent = Intent(this, ShoppingListActivity::class.java)
-
-            startActivity(intent)
+            activityManager.startActivityWithResources(null, ShoppingListActivity::class.java)
         }
+    }
+
+    private fun logIn() {
+        databaseManager.getUsersReference(usernameEditText.text.toString())
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    for (dataSnapshot in snapshot.children) {
+                        val username = dataSnapshot.key.toString()
+                        val email = dataSnapshot.child("email").value.toString()
+                        val password = dataSnapshot.child("password").value.toString()
+
+                        val user = UserModel(username, email, password)
+
+                        if (username == usernameEditText.text.toString() &&
+                            password == passwordEditText.text.toString()) {
+                            Toast.makeText(context, "Nice to see you ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
+                            activityManager.startActivityWithResources(user, ShoppingListActivity::class.java)
+                        }
+                        else {
+                            Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, "Error, cannot access data", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun onBackPressed() {

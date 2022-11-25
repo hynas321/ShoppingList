@@ -40,16 +40,13 @@ class ShoppingListActivity : AppCompatActivity() {
         val list = ArrayList<ShoppingListModel>()
 
         list.add(
-            ShoppingListModel("Aaa", "B",
-            R.drawable.ic_shopping_cart, "Shopping list 1")
+            ShoppingListModel("Shopping list 1", R.drawable.ic_shopping_cart)
         )
         list.add(
-            ShoppingListModel("Abb", "B",
-            R.drawable.ic_shopping_cart, "Shopping list 2")
+            ShoppingListModel("Shopping list 2", R.drawable.ic_shopping_cart)
         )
         list.add(
-            ShoppingListModel("Acc", "B",
-            R.drawable.ic_shopping_cart, "Shopping list 3")
+            ShoppingListModel("Shopping list 3", R.drawable.ic_shopping_cart)
         )
 
         return list

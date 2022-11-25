@@ -4,86 +4,74 @@ import com.example.shoppinglist.property.DatabaseMainObject
 import com.example.shoppinglist.model.UserModel
 import com.example.shoppinglist.model.ProductModel
 import com.example.shoppinglist.model.ShoppingListModel
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.runBlocking
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.*
 
-class DatabaseManager() {
-    private var database: DatabaseReference =
+class DatabaseManager {
+    private var databaseReference: DatabaseReference =
         FirebaseDatabase.getInstance("https://shoppinglist-9f095-default-rtdb.europe-west1.firebasedatabase.app/").reference
 
-    fun writeUser(user: UserModel): Boolean = runBlocking {
-        var complete = false
-        val userId = user.username
-
+    fun writeUserTask(user: UserModel): Task<Void> {
         val userValues = object {
-            val email = user.email
-            val password = user.password
+            val email: String = user.email
+            val password: String = user.password
         }
 
-        database
+        return databaseReference
             .child(DatabaseMainObject.users)
-            .child(userId)
+            .child(user.username)
             .setValue(userValues)
-            .addOnCompleteListener {
-                complete = true
-            }
-
-        return@runBlocking true
     }
 
-    fun writeShoppingList(shoppingList: ShoppingListModel): Boolean = runBlocking {
-        var complete = false
-        val shoppingListId = "123"
-
+    fun writeShoppingListTask(username: String, shoppingList: ShoppingListModel): Task<Void> {
         val shoppingListValues = object {
-            val username = shoppingList.username
             val iconImageViewId = shoppingList.iconImageViewId
-            val name = shoppingList.username
         }
 
-        database
+        return databaseReference
             .child(DatabaseMainObject.users)
-            .child(shoppingListId)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingList.shoppingListName)
             .setValue(shoppingListValues)
-            .addOnCompleteListener {
-                complete = true
-            }
-
-        return@runBlocking complete
     }
 
-    fun writeProduct(product: ProductModel): Boolean = runBlocking{
-        var complete = false
-        val productId = "123"
-
-        val shoppingListValues = object {
-            val shoppingListId = product.shoppingListId
+    fun writeProductTask(username: String, shoppingListName: String, product: ProductModel): Task<Void> {
+        val productValues = object {
             val categoryIcon = product.categoryIcon
-            val productName = product.productName
-            val quantity = product.quantity
+            var quantity = product.quantity
         }
 
-        database
+        return databaseReference
             .child(DatabaseMainObject.users)
-            .child(productId)
-            .setValue(shoppingListValues)
-            .addOnCompleteListener {
-                complete = true
-            }
-
-        return@runBlocking complete
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingListName)
+            .child(DatabaseMainObject.products)
+            .child(product.productName)
+            .setValue(productValues)
     }
 
-    fun readUser(username: String) {
+    fun getUsersReference(username: String): DatabaseReference {
 
+        return databaseReference.child(DatabaseMainObject.users)
     }
 
-    fun readShoppingLists(id: String) {
+    fun getShoppingListsReference(username: String): DatabaseReference {
 
+        return databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
     }
 
-    fun readProducts(id: String) {
+    fun getProductsReference(username: String, shoppingListName: String): DatabaseReference {
 
+        return databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingListName)
+            .child(DatabaseMainObject.products)
     }
 }

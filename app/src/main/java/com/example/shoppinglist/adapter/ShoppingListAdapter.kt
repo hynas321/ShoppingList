@@ -6,10 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.text.InputType
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
@@ -50,7 +47,7 @@ class ShoppingListAdapter(
         val input = EditText(context)
 
         builder.setTitle("Set name of your new shopping list")
-        input.setHint("Enter Text")
+        input.hint = "Enter Text"
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
@@ -58,7 +55,7 @@ class ShoppingListAdapter(
         {
                 dialog, which ->
             val name = input.text.toString()
-            val newModel = ShoppingListModel("A", "B", R.id.imageView_icon, name)
+            val newModel = ShoppingListModel("A", R.id.imageView_icon)
 
             shoppingListModels.add(newModel)
             notifyItemInserted(shoppingListModels.size - 1)
@@ -138,7 +135,7 @@ class ShoppingListAdapter(
         val shoppingListModel = shoppingListModels[position]
 
         builder.setTitle("Rename \"${shoppingListModel.shoppingListName}\" shopping list")
-        input.setHint("Enter Text")
+        input.hint = "Enter Text"
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 

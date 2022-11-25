@@ -46,16 +46,13 @@ class ProductListActivity : AppCompatActivity() {
         val list = ArrayList<ProductModel>()
 
         list.add(
-            ProductModel("A", "B",
-                R.drawable.ic_shopping_cart, "Product 1", "5")
+            ProductModel("Product 1", R.drawable.ic_shopping_cart, "5")
         )
         list.add(
-            ProductModel("A", "B",
-                R.drawable.ic_shopping_cart, "Product 2", "10")
+            ProductModel("Product 2", R.drawable.ic_shopping_cart, "10")
         )
         list.add(
-            ProductModel("A", "B",
-                R.drawable.ic_shopping_cart, "Product 3", "100")
+            ProductModel("Product 3", R.drawable.ic_shopping_cart, "15")
         )
 
         return list

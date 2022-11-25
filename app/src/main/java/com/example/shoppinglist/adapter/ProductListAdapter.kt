@@ -60,7 +60,7 @@ class ProductListAdapter(
             dialog, which ->
             val name = inputName.text.toString()
             //val quantity = inputQuantity.text.toString()
-            val newModel = ProductModel("A", "B", R.id.imageView_categoryIcon, name, "1")
+            val newModel = ProductModel(name, R.id.imageView_categoryIcon, "1")
 
             productModels.add(newModel)
             notifyItemInserted(productModels.size - 1)

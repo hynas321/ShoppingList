@@ -38,7 +38,7 @@
     <include
         android:id="@+id/custom_navigation_bar"
         layout="@layout/custom_navigation_bar"
-        android:layout_width="413dp"
+        android:layout_width="415dp"
         android:layout_height="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
