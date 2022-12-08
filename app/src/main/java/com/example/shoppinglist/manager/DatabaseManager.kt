@@ -11,7 +11,7 @@ class DatabaseManager {
     private var databaseReference: DatabaseReference =
         FirebaseDatabase.getInstance("https://shoppinglist-9f095-default-rtdb.europe-west1.firebasedatabase.app/").reference
 
-    fun writeUserTask(user: UserModel): Task<Void> {
+    fun writeUser(user: UserModel): Task<Void> {
         val userValues = object {
             val email: String = user.email
             val password: String = user.password
@@ -23,7 +23,7 @@ class DatabaseManager {
             .setValue(userValues)
     }
 
-    fun writeShoppingListTask(username: String, shoppingList: ShoppingListModel): Task<Void> {
+    fun writeShoppingList(username: String, shoppingList: ShoppingListModel): Task<Void> {
         val shoppingListValues = object {
             val iconImageViewId = shoppingList.iconImageViewId
         }
@@ -36,7 +36,7 @@ class DatabaseManager {
             .setValue(shoppingListValues)
     }
 
-    fun writeProductTask(username: String, shoppingListName: String, product: ProductModel): Task<Void> {
+    fun writeProduct(username: String, shoppingList: ShoppingListModel, product: ProductModel): Task<Void> {
         val productValues = object {
             val categoryIcon = product.categoryIcon
             var quantity = product.quantity
@@ -46,13 +46,42 @@ class DatabaseManager {
             .child(DatabaseMainObject.users)
             .child(username)
             .child(DatabaseMainObject.shoppingLists)
-            .child(shoppingListName)
+            .child(shoppingList.shoppingListName)
             .child(DatabaseMainObject.products)
             .child(product.productName)
             .setValue(productValues)
     }
 
-    fun getUsersReference(username: String): DatabaseReference {
+    fun removeUser(username: String): Task<Void> {
+
+        return databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .removeValue()
+    }
+
+    fun removeShoppingList(username: String, shoppingList: ShoppingListModel): Task<Void> {
+        return databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingList.shoppingListName)
+            .removeValue()
+    }
+
+    fun removeProduct(username: String, shoppingList: ShoppingListModel, product: ProductModel): Task<Void> {
+
+        return databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingList.shoppingListName)
+            .child(DatabaseMainObject.products)
+            .child(product.productName)
+            .removeValue()
+    }
+
+    fun getUsersReference(): DatabaseReference {
 
         return databaseReference.child(DatabaseMainObject.users)
     }

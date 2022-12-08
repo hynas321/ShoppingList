@@ -22,11 +22,9 @@ class ActivityManager(private val context: Context) {
     fun <T> startActivityWithResources(string: String, activity: Class<T>) {
         val intent = Intent(context, activity)
 
-        if (string != null) {
-            val extras = Bundle()
-            extras.putSerializable("string", string)
-            intent.putExtras(extras)
-        }
+        val extras = Bundle()
+        extras.putSerializable("string", string)
+        intent.putExtras(extras)
 
         context.startActivity(intent)
     }

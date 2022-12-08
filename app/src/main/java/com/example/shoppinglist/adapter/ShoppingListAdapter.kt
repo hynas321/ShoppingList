@@ -11,14 +11,19 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.activity.ProductListActivity
+import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.ShoppingListModel
+import com.example.shoppinglist.model.UserModel
 import com.google.android.material.snackbar.Snackbar
 
 
 class ShoppingListAdapter(
     private val context: Context,
-    private val shoppingListModels: ArrayList<ShoppingListModel>)
-    : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+    private val shoppingListModels: ArrayList<ShoppingListModel>,
+    private val user: UserModel
+    ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+
+    private val databaseManager: DatabaseManager = DatabaseManager()
 
     inner class ShoppingListViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
@@ -53,17 +58,15 @@ class ShoppingListAdapter(
 
         builder.setPositiveButton("OK", DialogInterface.OnClickListener
         {
-                dialog, which ->
-            val name = input.text.toString()
-            val newModel = ShoppingListModel("A", R.id.imageView_icon)
+            dialog, which ->
+            val model = ShoppingListModel(input.text.toString(), R.id.imageView_icon)
 
-            shoppingListModels.add(newModel)
-            notifyItemInserted(shoppingListModels.size - 1)
+            insertItem(shoppingListModels.size - 1, model)
         })
 
         builder.setNegativeButton("Cancel", DialogInterface.OnClickListener
         {
-                dialog, which -> dialog.cancel()
+            dialog, which -> dialog.cancel()
         })
 
         builder.show()
@@ -106,21 +109,10 @@ class ShoppingListAdapter(
 
             R.id.shopping_list_menu_rename -> {
 
-                changeNameAlertDialog(position)
                 return true
             }
 
-            R.id.shopping_list_menu_copy -> {
-                val copiedItem = shoppingListModels[position]
-                val copiedItemPosition = position + 1
-
-                shoppingListModels.add(copiedItemPosition, copiedItem)
-                notifyItemInserted(copiedItemPosition)
-
-                Snackbar
-                    .make(itemView, "Copied " + copiedItem.shoppingListName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo", View.OnClickListener { removeItem(copiedItemPosition) })
-                    .show()
+            R.id.shopping_list_menu_share -> {
 
                 return true
             }
@@ -129,38 +121,14 @@ class ShoppingListAdapter(
         }
     }
 
-    private fun changeNameAlertDialog(position: Int) {
-        val builder = Builder(context)
-        val input = EditText(context)
-        val shoppingListModel = shoppingListModels[position]
-
-        builder.setTitle("Rename \"${shoppingListModel.shoppingListName}\" shopping list")
-        input.hint = "Enter Text"
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
-
-        builder.setPositiveButton("OK", DialogInterface.OnClickListener
-        {
-            dialog, which -> shoppingListModel.shoppingListName = input.text.toString()
-            notifyItemChanged(position)
-        })
-
-        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener
-        {
-            dialog, which -> dialog.cancel()
-        })
-
-        builder.show()
-    }
-
     private fun insertItem(position: Int, model: ShoppingListModel) {
-        shoppingListModels.add(position, model)
-        notifyItemInserted(position)
+        databaseManager.writeShoppingList(user.username, model)
     }
 
     private fun removeItem(position: Int) {
-        shoppingListModels.removeAt(position)
-        notifyItemRemoved(position)
+        val shoppingList = shoppingListModels[position]
+
+        databaseManager.removeShoppingList(user.username, shoppingList)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {

@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var databaseManager: DatabaseManager
-    //private lateinit var snackBarManager: SnackBarManager
     private lateinit var activityManager: ActivityManager
     private lateinit var internetManager: InternetManager
 
@@ -83,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun logIn() {
-        databaseManager.getUsersReference(usernameEditText.text.toString())
+        databaseManager.getUsersReference()
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -96,11 +95,17 @@ class LoginActivity : AppCompatActivity() {
 
                         if (username == usernameEditText.text.toString() &&
                             password == passwordEditText.text.toString()) {
+
                             Toast.makeText(context, "Nice to see you ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
+                            databaseManager.getUsersReference().removeEventListener(this)
                             activityManager.startActivityWithResources(user, ShoppingListActivity::class.java)
+
+                            break
                         }
                         else {
                             Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
+
+                            break
                         }
                     }
                 }

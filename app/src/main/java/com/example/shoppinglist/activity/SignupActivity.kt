@@ -14,7 +14,6 @@ import com.example.shoppinglist.model.UserModel
 
 class SignupActivity: AppCompatActivity()  {
     private lateinit var databaseManager: DatabaseManager
-    //private lateinit var snackBarManager: SnackBarManager
     private lateinit var activityManager: ActivityManager
 
     private lateinit var emailEditText: EditText
@@ -59,7 +58,7 @@ class SignupActivity: AppCompatActivity()  {
                 passwordEditText.text.toString()
             )
 
-            databaseManager.writeUserTask(userModel)
+            databaseManager.writeUser(userModel)
                 .addOnCompleteListener {
                     Toast.makeText(context, "Welcome ${userModel.username}!", Toast.LENGTH_SHORT).show()
                     activityManager.startActivityWithResources(userModel, ShoppingListActivity::class.java)

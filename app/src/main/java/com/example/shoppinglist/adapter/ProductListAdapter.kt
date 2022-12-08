@@ -108,7 +108,7 @@ class ProductListAdapter(
                 return true
             }
 
-            R.id.shopping_list_menu_copy -> {
+            R.id.shopping_list_menu_share -> {
                 val copiedItem = productModels[position]
                 val copiedItemPosition = position + 1
 
