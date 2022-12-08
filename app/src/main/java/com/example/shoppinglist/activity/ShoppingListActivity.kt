@@ -40,7 +40,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
         user = intent.getSerializableExtra("model") as UserModel
 
-        setShoppingLists(user.username)
+        setShoppingListModelsChangeEvent(user.username)
 
         linearLayoutManager = LinearLayoutManager(this)
         shoppingListAdapter = ShoppingListAdapter(this, shoppingListModels, user)
@@ -56,7 +56,7 @@ class ShoppingListActivity : AppCompatActivity() {
         }
     }
 
-    private fun setShoppingLists(username: String) {
+    private fun setShoppingListModelsChangeEvent(username: String) {
         databaseManager.getShoppingListsReference(username)
             .addValueEventListener(object: ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")

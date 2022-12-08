@@ -84,6 +84,7 @@ class LoginActivity : AppCompatActivity() {
     private fun logIn() {
         databaseManager.getUsersReference()
             .addValueEventListener(object: ValueEventListener {
+
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     for (dataSnapshot in snapshot.children) {
@@ -97,17 +98,13 @@ class LoginActivity : AppCompatActivity() {
                             password == passwordEditText.text.toString()) {
 
                             Toast.makeText(context, "Nice to see you ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
-                            databaseManager.getUsersReference().removeEventListener(this)
+
                             activityManager.startActivityWithResources(user, ShoppingListActivity::class.java)
-
-                            break
-                        }
-                        else {
-                            Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
-
-                            break
+                            return
                         }
                     }
+
+                    Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
