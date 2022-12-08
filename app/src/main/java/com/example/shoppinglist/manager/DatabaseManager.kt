@@ -36,7 +36,7 @@ class DatabaseManager {
             .setValue(shoppingListValues)
     }
 
-    fun writeProduct(username: String, shoppingList: ShoppingListModel, product: ProductModel): Task<Void> {
+    fun writeProduct(username: String, shoppingListName: String, product: ProductModel): Task<Void> {
         val productValues = object {
             val categoryIcon = product.categoryIcon
             var quantity = product.quantity
@@ -46,7 +46,7 @@ class DatabaseManager {
             .child(DatabaseMainObject.users)
             .child(username)
             .child(DatabaseMainObject.shoppingLists)
-            .child(shoppingList.shoppingListName)
+            .child(shoppingListName)
             .child(DatabaseMainObject.products)
             .child(product.productName)
             .setValue(productValues)
@@ -60,24 +60,24 @@ class DatabaseManager {
             .removeValue()
     }
 
-    fun removeShoppingList(username: String, shoppingList: ShoppingListModel): Task<Void> {
+    fun removeShoppingList(username: String, shoppingListName: String): Task<Void> {
         return databaseReference
             .child(DatabaseMainObject.users)
             .child(username)
             .child(DatabaseMainObject.shoppingLists)
-            .child(shoppingList.shoppingListName)
+            .child(shoppingListName)
             .removeValue()
     }
 
-    fun removeProduct(username: String, shoppingList: ShoppingListModel, product: ProductModel): Task<Void> {
+    fun removeProduct(username: String, shoppingListName: String, productName: String): Task<Void> {
 
         return databaseReference
             .child(DatabaseMainObject.users)
             .child(username)
             .child(DatabaseMainObject.shoppingLists)
-            .child(shoppingList.shoppingListName)
+            .child(shoppingListName)
             .child(DatabaseMainObject.products)
-            .child(product.productName)
+            .child(productName)
             .removeValue()
     }
 

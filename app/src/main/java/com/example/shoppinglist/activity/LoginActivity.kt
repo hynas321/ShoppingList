@@ -84,6 +84,7 @@ class LoginActivity : AppCompatActivity() {
     private fun logIn() {
         databaseManager.getUsersReference()
             .addValueEventListener(object: ValueEventListener {
+                val listenerContext = this
 
                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -99,11 +100,13 @@ class LoginActivity : AppCompatActivity() {
 
                             Toast.makeText(context, "Nice to see you ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
 
+                            databaseManager.getUsersReference().removeEventListener(listenerContext)
                             activityManager.startActivityWithResources(user, ShoppingListActivity::class.java)
                             return
                         }
                     }
 
+                    databaseManager.getUsersReference().removeEventListener(listenerContext)
                     Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
                 }
 

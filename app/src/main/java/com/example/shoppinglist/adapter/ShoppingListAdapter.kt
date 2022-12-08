@@ -2,7 +2,6 @@ package com.example.shoppinglist.adapter
 
 import android.app.AlertDialog.Builder
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.text.InputType
 import android.view.*
@@ -56,18 +55,15 @@ class ShoppingListAdapter(
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
-        builder.setPositiveButton("OK", DialogInterface.OnClickListener
-        {
-            dialog, which ->
-            val model = ShoppingListModel(input.text.toString(), R.id.imageView_icon)
+        builder.setPositiveButton("OK") { _, _ ->
+            val shoppingList = ShoppingListModel(input.text.toString(), R.id.imageView_icon)
 
-            insertItem(shoppingListModels.size - 1, model)
-        })
+            insertItem(shoppingList)
+        }
 
-        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener
-        {
-            dialog, which -> dialog.cancel()
-        })
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
 
         builder.show()
     }
@@ -95,19 +91,25 @@ class ShoppingListAdapter(
         when (item.itemId) {
 
             R.id.shopping_list_menu_delete -> {
-                val removedItem = shoppingListModels[position]
+                val removedShoppingList = shoppingListModels[position]
 
                 removeItem(position)
 
                 Snackbar
-                    .make(itemView, "Deleted " + removedItem.shoppingListName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo", View.OnClickListener { insertItem(position, removedItem) })
+                    .make(itemView, "Deleted " + removedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
+                    .setAction("Undo") { insertItem(removedShoppingList) }
                     .show()
 
                 return true
             }
 
             R.id.shopping_list_menu_rename -> {
+                val renamedShoppingList = shoppingListModels[position]
+
+                Snackbar
+                    .make(itemView, "Renamed " + renamedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
+                    .setAction("Undo") { insertItem(renamedShoppingList) }
+                    .show()
 
                 return true
             }
@@ -121,14 +123,16 @@ class ShoppingListAdapter(
         }
     }
 
-    private fun insertItem(position: Int, model: ShoppingListModel) {
-        databaseManager.writeShoppingList(user.username, model)
+    private fun insertItem(item: ShoppingListModel) {
+        databaseManager.writeShoppingList(user.username, item)
+
+        Toast.makeText(context, "Added ${item.shoppingListName}", Toast.LENGTH_SHORT).show()
     }
 
     private fun removeItem(position: Int) {
         val shoppingList = shoppingListModels[position]
 
-        databaseManager.removeShoppingList(user.username, shoppingList)
+        databaseManager.removeShoppingList(user.username, shoppingList.shoppingListName)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {
