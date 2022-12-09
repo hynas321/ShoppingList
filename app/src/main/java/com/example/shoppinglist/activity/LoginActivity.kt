@@ -73,11 +73,11 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            activityManager.startActivityWithResources(null, SignupActivity::class.java)
+            activityManager.startActivity(SignupActivity::class.java)
         }
 
         offlineButton.setOnClickListener {
-            activityManager.startActivityWithResources(null, ShoppingListActivity::class.java)
+            activityManager.startActivity(ShoppingListActivity::class.java)
         }
     }
 
@@ -101,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(context, "Nice to see you ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
 
                             databaseManager.getUsersReference().removeEventListener(listenerContext)
-                            activityManager.startActivityWithResources(user, ShoppingListActivity::class.java)
+                            activityManager.startActivityWithResources(username, ShoppingListActivity::class.java)
                             return
                         }
                     }
@@ -111,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(context, "Error, cannot access data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Authorization error", Toast.LENGTH_SHORT).show()
                 }
             })
     }

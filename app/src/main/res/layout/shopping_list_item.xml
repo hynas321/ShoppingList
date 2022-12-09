@@ -17,18 +17,18 @@
 
     <TextView
         android:id="@+id/textView_name"
-        android:layout_width="246dp"
+        android:layout_width="226dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10sp"
         android:text="aaa"
         android:textSize="@dimen/toolbar_title_textSize" />
 
     <ImageView
-        android:id="@+id/imageView_vertical_dots_icon"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
+        android:id="@+id/imageView_trash_bin_icon"
+        android:layout_width="220dp"
+        android:layout_height="67dp"
         android:layout_marginLeft="10sp"
+        android:layout_weight="1"
         app:srcCompat="@drawable/ic_vertical_dots" />
 
 </LinearLayout>

@@ -52,16 +52,16 @@ class SignupActivity: AppCompatActivity()  {
         passwordEditText.addTextChangedListener(editTextsWatcher)
 
         signupButton.setOnClickListener {
-            val userModel = UserModel(
+            val user = UserModel(
                 usernameEditText.text.toString(),
                 emailEditText.text.toString(),
                 passwordEditText.text.toString()
             )
 
-            databaseManager.writeUser(userModel)
+            databaseManager.writeUser(user)
                 .addOnCompleteListener {
-                    Toast.makeText(context, "Welcome ${userModel.username}!", Toast.LENGTH_SHORT).show()
-                    activityManager.startActivityWithResources(userModel, ShoppingListActivity::class.java)
+                    Toast.makeText(context, "Welcome ${user.username}!", Toast.LENGTH_SHORT).show()
+                    activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
                 }.addOnCanceledListener {
                     Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {

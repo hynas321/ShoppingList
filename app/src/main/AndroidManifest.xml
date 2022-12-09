@@ -27,7 +27,11 @@
                 android:value="" />
         </activity>
         <activity android:name=".activity.SignupActivity" />
-        <activity android:name=".activity.ShoppingListActivity" />
-        <activity android:name=".activity.ProductListActivity" />
+        <activity
+            android:name=".activity.ShoppingListActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.ProductListActivity"
+            android:windowSoftInputMode="adjustNothing" />
     </application>
 </manifest>

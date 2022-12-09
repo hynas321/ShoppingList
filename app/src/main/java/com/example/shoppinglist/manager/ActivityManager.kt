@@ -7,14 +7,8 @@ import com.example.shoppinglist.model.Model
 
 class ActivityManager(private val context: Context) {
 
-    fun <T> startActivityWithResources(model: Model?, activity: Class<T>) {
+    fun <T> startActivity(activity: Class<T>) {
         val intent = Intent(context, activity)
-
-        if (model != null) {
-            val extras = Bundle()
-            extras.putSerializable("model", model)
-            intent.putExtras(extras)
-        }
 
         context.startActivity(intent)
     }
@@ -24,6 +18,17 @@ class ActivityManager(private val context: Context) {
 
         val extras = Bundle()
         extras.putSerializable("string", string)
+        intent.putExtras(extras)
+
+        context.startActivity(intent)
+    }
+
+    fun <T> startActivityWithResources(string1: String, string2: String, activity: Class<T>) {
+        val intent = Intent(context, activity)
+
+        val extras = Bundle()
+        extras.putSerializable("string1", string1)
+        extras.putSerializable("string2", string2)
         intent.putExtras(extras)
 
         context.startActivity(intent)

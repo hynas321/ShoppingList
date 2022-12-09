@@ -2,27 +2,26 @@ package com.example.shoppinglist.adapter
 
 import android.app.AlertDialog.Builder
 import android.content.Context
-import android.content.Intent
 import android.text.InputType
 import android.view.*
 import android.widget.*
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.activity.ProductListActivity
+import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.ShoppingListModel
-import com.example.shoppinglist.model.UserModel
 import com.google.android.material.snackbar.Snackbar
 
 
 class ShoppingListAdapter(
     private val context: Context,
     private val shoppingListModels: ArrayList<ShoppingListModel>,
-    private val user: UserModel
+    private val username: String
     ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
 
     private val databaseManager: DatabaseManager = DatabaseManager()
+    private val activityManager: ActivityManager = ActivityManager(context)
 
     inner class ShoppingListViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
@@ -34,45 +33,16 @@ class ShoppingListAdapter(
         init {
             shoppingListIcon = itemView.findViewById(R.id.imageView_icon)
             shoppingListName = itemView.findViewById(R.id.textView_name)
-            shoppingListExtensionIcon = itemView.findViewById(R.id.imageView_vertical_dots_icon)
+            shoppingListExtensionIcon = itemView.findViewById(R.id.imageView_trash_bin_icon)
 
             itemView.setOnClickListener {
-                openProductListActivity()
+                activityManager.startActivityWithResources(username, shoppingListName.text.toString(), ProductListActivity::class.java)
             }
 
             shoppingListExtensionIcon.setOnClickListener {
                 showPopup(shoppingListExtensionIcon, adapterPosition)
             }
         }
-    }
-
-    fun createItemAlertDialog() {
-        val builder = Builder(context)
-        val input = EditText(context)
-
-        builder.setTitle("Set name of your new shopping list")
-        input.hint = "Enter Text"
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
-
-        builder.setPositiveButton("OK") { _, _ ->
-            val shoppingList = ShoppingListModel(input.text.toString(), R.id.imageView_icon)
-
-            insertItem(shoppingList)
-        }
-
-        builder.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.cancel()
-        }
-
-        builder.show()
-    }
-
-    private fun openProductListActivity() {
-        val intent = Intent(context, ProductListActivity::class.java)
-
-        intent.putExtra("id", "1")
-        startActivity(context, intent, null)
     }
 
     private fun showPopup(itemView: View, position: Int) {
@@ -123,16 +93,16 @@ class ShoppingListAdapter(
         }
     }
 
-    private fun insertItem(item: ShoppingListModel) {
-        databaseManager.writeShoppingList(user.username, item)
+    fun insertItem(item: ShoppingListModel) {
+        databaseManager.writeShoppingList(username, item)
 
         Toast.makeText(context, "Added ${item.shoppingListName}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun removeItem(position: Int) {
+    fun removeItem(position: Int) {
         val shoppingList = shoppingListModels[position]
 
-        databaseManager.removeShoppingList(user.username, shoppingList.shoppingListName)
+        databaseManager.removeShoppingList(username, shoppingList.shoppingListName)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {

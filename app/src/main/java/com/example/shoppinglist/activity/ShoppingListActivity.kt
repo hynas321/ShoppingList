@@ -1,8 +1,11 @@
 package com.example.shoppinglist.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +31,7 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var addListButton: Button
 
     private lateinit var shoppingListModels: ArrayList<ShoppingListModel>
-    private lateinit var user: UserModel
+    private lateinit var username: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +41,12 @@ class ShoppingListActivity : AppCompatActivity() {
         databaseManager = DatabaseManager()
         shoppingListModels = ArrayList()
 
-        user = intent.getSerializableExtra("model") as UserModel
+        username = intent.getStringExtra("string").toString()
 
-        setShoppingListModelsChangeEvent(user.username)
+        setShoppingListModelsChangeEvent()
 
         linearLayoutManager = LinearLayoutManager(this)
-        shoppingListAdapter = ShoppingListAdapter(this, shoppingListModels, user)
+        shoppingListAdapter = ShoppingListAdapter(this, shoppingListModels, username)
 
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addListButton = findViewById(R.id.shopping_list_button_add_list)
@@ -52,11 +55,33 @@ class ShoppingListActivity : AppCompatActivity() {
         recyclerView.adapter = shoppingListAdapter
 
         addListButton.setOnClickListener {
-            shoppingListAdapter.createItemAlertDialog()
+            createItemAlertDialog()
         }
     }
 
-    private fun setShoppingListModelsChangeEvent(username: String) {
+    private fun createItemAlertDialog() {
+        val builder = AlertDialog.Builder(context)
+        val input = EditText(context)
+
+        builder.setTitle("Set name of your new shopping list")
+        input.hint = "Enter Text"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            val shoppingList = ShoppingListModel(input.text.toString(), R.id.imageView_icon)
+
+            shoppingListAdapter.insertItem(shoppingList)
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    private fun setShoppingListModelsChangeEvent() {
         databaseManager.getShoppingListsReference(username)
             .addValueEventListener(object: ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
