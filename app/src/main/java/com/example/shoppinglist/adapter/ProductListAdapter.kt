@@ -1,6 +1,7 @@
 package com.example.shoppinglist.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.*
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +52,13 @@ class ProductListAdapter(
                 updatedProduct.bought = !updatedProduct.bought
 
                 databaseManager.updateProduct(username, shoppingListName, updatedProduct)
+
+                if (updatedProduct.bought) {
+                    itemView.setBackgroundColor(Color.parseColor("#B0FFC2"))
+                }
+                else {
+                    itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                }
             }
         }
     }
@@ -79,6 +87,7 @@ class ProductListAdapter(
 
         if (product.bought) {
             holder.productBoughtCheckBox.isChecked = true
+            holder.itemView.setBackgroundColor(Color.parseColor("#B0FFC2"))
         }
 
         holder.productCategoryIcon.setImageResource(R.drawable.ic_shopping_bag)

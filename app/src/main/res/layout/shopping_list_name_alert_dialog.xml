@@ -3,7 +3,7 @@
     android:id="@+id/shopping_list_name_alert_dialog"
     android:layout_width="fill_parent"
     android:layout_height="150dp"
-    android:background="@android:color/holo_blue_dark"
+    android:background="#1A73E9"
     android:orientation="vertical">
 
     <TextView
@@ -43,7 +43,6 @@
             android:background="@android:color/white"
             android:clickable="true"
             android:text="Submit"
-            android:textColor="#039BE5"
             android:textStyle="bold" />
 
         <Button
@@ -54,7 +53,6 @@
             android:background="@android:color/white"
             android:clickable="true"
             android:text="Cancel"
-            android:textColor="#039BE5"
             android:textStyle="bold" />
     </LinearLayout>
 

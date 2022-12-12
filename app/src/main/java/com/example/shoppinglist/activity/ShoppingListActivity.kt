@@ -4,31 +4,38 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.adapter.ShoppingListAdapter
+import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.ShoppingListModel
 import com.example.shoppinglist.model.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_product_list.view.*
 
 
 class ShoppingListActivity : AppCompatActivity() {
     val context: AppCompatActivity = this
 
     private lateinit var databaseManager: DatabaseManager
+    private lateinit var activityManager: ActivityManager
 
     private lateinit var shoppingListAdapter: ShoppingListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var addListButton: Button
+    private lateinit var navigationBar: ConstraintLayout
+    private lateinit var navigationBarSettingsButton: View
 
     private lateinit var shoppingListModels: ArrayList<ShoppingListModel>
     private lateinit var username: String
@@ -39,6 +46,7 @@ class ShoppingListActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
 
         databaseManager = DatabaseManager()
+        activityManager = ActivityManager(context)
         shoppingListModels = ArrayList()
 
         username = intent.getStringExtra("string").toString()
@@ -50,12 +58,18 @@ class ShoppingListActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addListButton = findViewById(R.id.shopping_list_button_add_list)
+        navigationBar = findViewById(R.id.custom_navigation_bar_1)
+        navigationBarSettingsButton = navigationBar.custom_navigation_bar_1
 
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = shoppingListAdapter
 
         addListButton.setOnClickListener {
             createItemAlertDialog()
+        }
+
+        navigationBarSettingsButton.setOnClickListener {
+            activityManager.startActivityWithResources(username, "", "ShoppingListActivity", SettingsActivity::class.java)
         }
     }
 
