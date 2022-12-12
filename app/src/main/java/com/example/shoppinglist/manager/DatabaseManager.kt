@@ -81,6 +81,48 @@ class DatabaseManager {
             .removeValue()
     }
 
+    fun updateUser(user: UserModel) {
+        val userValues = mapOf(
+            "email" to user.email,
+            "password" to user.password,
+        )
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .child(user.username)
+            .updateChildren(userValues)
+    }
+
+    fun updateShoppingList(username: String, shoppingList: ShoppingListModel) {
+        val shoppingListValues = mapOf(
+            "iconImageViewId" to shoppingList.iconImageViewId
+        )
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingList.shoppingListName)
+            .updateChildren(shoppingListValues)
+    }
+
+    fun updateProduct(username: String, shoppingListName: String, product: ProductModel) {
+        val productValues = mapOf(
+            "bought" to product.bought,
+            "categoryIcon" to product.categoryIcon,
+            "quantity" to product.quantity
+        )
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .child(username)
+            .child(DatabaseMainObject.shoppingLists)
+            .child(shoppingListName)
+            .child(DatabaseMainObject.products)
+            .child(product.productName)
+            .updateChildren(productValues)
+    }
+
     fun getUsersReference(): DatabaseReference {
 
         return databaseReference.child(DatabaseMainObject.users)

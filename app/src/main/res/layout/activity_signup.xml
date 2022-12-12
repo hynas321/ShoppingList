@@ -17,54 +17,51 @@
 
     <EditText
         android:id="@+id/signup_editText_email"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <EditText
         android:id="@+id/signup_editText_username"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="144dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="44dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_editText_email" />
 
     <EditText
         android:id="@+id/signup_editText_password"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="44dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_editText_username" />
 
     <Button
         android:id="@+id/signup_button"
-        android:layout_width="175dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="52dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
         android:enabled="false"
         android:text="Sign up"
         android:textSize="@dimen/button_textSize"

@@ -17,9 +17,9 @@
 
     <EditText
         android:id="@+id/login_editText_username"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Username"
@@ -31,24 +31,23 @@
 
     <EditText
         android:id="@+id/login_editText_password"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="44dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_editText_username" />
 
     <Button
         android:id="@+id/login_button_login"
-        android:layout_width="175dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
         android:enabled="false"
         android:text="Log in"
         android:textSize="@dimen/button_textSize"
@@ -58,10 +57,10 @@
 
     <Button
         android:id="@+id/login_button_offline"
-        android:layout_width="175dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="32dp"
-        android:text="Continue offline"
+        android:layout_width="315dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="36dp"
+        android:text="Start without account"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,9 +68,9 @@
 
     <Button
         android:id="@+id/login_button_signup"
-        android:layout_width="175dp"
-        android:layout_height="71dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="36dp"
         android:text="Sign up"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"

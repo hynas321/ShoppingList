@@ -1,9 +1,6 @@
 package com.example.shoppinglist.adapter
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.text.InputType
 import android.view.*
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
@@ -24,12 +21,14 @@ class ProductListAdapter(
     inner class ProductViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
 
+        val productBoughtCheckBox: CheckBox
         val productCategoryIcon: ImageView
         val productName: TextView
         val productQuantity: TextView
         val productTrashBinIcon: ImageView
 
         init {
+            productBoughtCheckBox = itemView.findViewById(R.id.checkBox_bought)
             productCategoryIcon = itemView.findViewById(R.id.imageView_categoryIcon)
             productName = itemView.findViewById(R.id.textView_name)
             productQuantity = itemView.findViewById(R.id.textView_quantity)
@@ -44,6 +43,14 @@ class ProductListAdapter(
                     .make(itemView, "Deleted " + removedProduct.productName, Snackbar.LENGTH_LONG)
                     .setAction("Undo") { insertItem(removedProduct) }
                     .show()
+            }
+
+            productBoughtCheckBox.setOnClickListener {
+                val updatedProduct = productModels[adapterPosition]
+
+                updatedProduct.bought = !updatedProduct.bought
+
+                databaseManager.updateProduct(username, shoppingListName, updatedProduct)
             }
         }
     }
@@ -68,11 +75,15 @@ class ProductListAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val shoppingListModel = productModels[position]
+        val product = productModels[position]
+
+        if (product.bought) {
+            holder.productBoughtCheckBox.isChecked = true
+        }
 
         holder.productCategoryIcon.setImageResource(R.drawable.ic_shopping_bag)
-        holder.productName.text = shoppingListModel.productName
-        holder.productQuantity.text = shoppingListModel.quantity
+        holder.productName.text = product.productName
+        holder.productQuantity.text = product.quantity
     }
 
     override fun getItemCount() = productModels.size

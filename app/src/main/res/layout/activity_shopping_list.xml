@@ -17,8 +17,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_list_recyclerView_product"
-        android:layout_width="347dp"
-        android:layout_height="532dp"
+        android:layout_width="360dp"
+        android:layout_height="520dp"
         app:layout_constraintBottom_toTopOf="@+id/shopping_list_button_add_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,13 +26,13 @@
 
     <Button
         android:id="@+id/shopping_list_button_add_list"
-        android:layout_width="200dp"
+        android:layout_width="315dp"
         android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/main_button_add_list"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintBottom_toTopOf="@+id/custom_navigation_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent" />
 
     <include
