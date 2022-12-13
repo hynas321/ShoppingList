@@ -77,12 +77,7 @@ class ShoppingListAdapter(
             R.id.shopping_list_menu_rename -> {
                 val renamedShoppingList = shoppingListModels[position]
 
-                showRenameShoppingListAlertDialog(position)
-
-                Snackbar
-                    .make(itemView, "Renamed " + renamedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo") { updateItem(renamedShoppingList, position) }
-                    .show()
+                showRenameShoppingListAlertDialog(position, itemView, renamedShoppingList)
 
                 return true
             }
@@ -96,7 +91,7 @@ class ShoppingListAdapter(
         }
     }
 
-    private fun showRenameShoppingListAlertDialog(position: Int) {
+    private fun showRenameShoppingListAlertDialog(position: Int, itemView: View, shoppingList: ShoppingListModel) {
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
@@ -106,11 +101,16 @@ class ShoppingListAdapter(
         builder.setView(input)
 
         builder.setPositiveButton("OK") { _, _ ->
-            val shoppingList = shoppingListModels[position]
+            val changedShoppingList = shoppingListModels[position]
 
-            shoppingList.shoppingListName = input.text.toString()
+            changedShoppingList.shoppingListName = input.text.toString()
 
             databaseManager.updateShoppingList(username, shoppingList)
+
+            Snackbar
+                .make(itemView, "Renamed " + shoppingList.shoppingListName, Snackbar.LENGTH_LONG)
+                .setAction("Undo") { updateItem(shoppingList, position) }
+                .show()
 
         }
 

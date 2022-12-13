@@ -7,6 +7,7 @@ import android.text.InputType
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +33,7 @@ class ProductListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var addProductButton: Button
+    private lateinit var noItemsTextView: TextView
     private lateinit var navigationBar: ConstraintLayout
     private lateinit var navigationBarSettingsButton: View
 
@@ -57,6 +59,7 @@ class ProductListActivity : AppCompatActivity() {
         productListAdapter = ProductListAdapter(this, productModels, username, shoppingListName)
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addProductButton = findViewById(R.id.product_list_button_add_product)
+        noItemsTextView = findViewById(R.id.product_list_empty)
         navigationBar = findViewById(R.id.custom_navigation_bar_1)
         navigationBarSettingsButton = navigationBar.custom_navigation_bar_1
 
@@ -114,6 +117,13 @@ class ProductListActivity : AppCompatActivity() {
                     }
 
                     productListAdapter.notifyDataSetChanged()
+
+                    if (productModels.isEmpty()) {
+                        noItemsTextView.visibility = View.VISIBLE
+                    }
+                    else {
+                        noItemsTextView.visibility = View.INVISIBLE
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

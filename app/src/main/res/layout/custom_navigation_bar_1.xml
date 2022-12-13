@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:id="@+id/custom_navigation_bar"
-        android:layout_width="410dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
