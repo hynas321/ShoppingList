@@ -1,7 +1,9 @@
 package com.example.shoppinglist.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.text.InputType
 import android.view.*
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
@@ -23,14 +25,12 @@ class ProductListAdapter(
         : RecyclerView.ViewHolder(itemView) {
 
         val productBoughtCheckBox: CheckBox
-        val productCategoryIcon: ImageView
         val productName: TextView
         val productQuantity: TextView
         val productTrashBinIcon: ImageView
 
         init {
             productBoughtCheckBox = itemView.findViewById(R.id.checkBox_bought)
-            productCategoryIcon = itemView.findViewById(R.id.imageView_categoryIcon)
             productName = itemView.findViewById(R.id.textView_name)
             productQuantity = itemView.findViewById(R.id.textView_quantity)
             productTrashBinIcon = itemView.findViewById(R.id.imageView_trash_bin_icon)
@@ -90,7 +90,6 @@ class ProductListAdapter(
             holder.itemView.setBackgroundColor(Color.parseColor("#B0FFC2"))
         }
 
-        holder.productCategoryIcon.setImageResource(R.drawable.ic_shopping_bag)
         holder.productName.text = product.productName
         holder.productQuantity.text = product.quantity
     }

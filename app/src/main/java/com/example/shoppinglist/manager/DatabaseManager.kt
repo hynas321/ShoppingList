@@ -38,7 +38,6 @@ class DatabaseManager {
 
     fun writeProduct(username: String, shoppingListName: String, product: ProductModel): Task<Void> {
         val productValues = object {
-            val categoryIcon = product.categoryIcon
             var quantity = product.quantity
         }
 
@@ -109,7 +108,6 @@ class DatabaseManager {
     fun updateProduct(username: String, shoppingListName: String, product: ProductModel) {
         val productValues = mapOf(
             "bought" to product.bought,
-            "categoryIcon" to product.categoryIcon,
             "quantity" to product.quantity
         )
 

@@ -105,7 +105,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
                     for (dataSnapshot in snapshot.children) {
 
-                        val shoppingListName = dataSnapshot.key.toString()
+                        val shoppingListName = dataSnapshot?.key.toString()
                         val iconImageViewId = dataSnapshot.child("iconImageViewId").value.toString().toInt()
 
                         val shoppingListModel = ShoppingListModel(shoppingListName, iconImageViewId)

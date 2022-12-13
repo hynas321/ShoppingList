@@ -1,5 +1,6 @@
 package com.example.shoppinglist.adapter
 
+import android.app.AlertDialog
 import android.app.AlertDialog.Builder
 import android.content.Context
 import android.text.InputType
@@ -76,9 +77,11 @@ class ShoppingListAdapter(
             R.id.shopping_list_menu_rename -> {
                 val renamedShoppingList = shoppingListModels[position]
 
+                showRenameShoppingListAlertDialog(position)
+
                 Snackbar
                     .make(itemView, "Renamed " + renamedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo") { insertItem(renamedShoppingList) }
+                    .setAction("Undo") { updateItem(renamedShoppingList, position) }
                     .show()
 
                 return true
@@ -93,6 +96,31 @@ class ShoppingListAdapter(
         }
     }
 
+    private fun showRenameShoppingListAlertDialog(position: Int) {
+        val builder = AlertDialog.Builder(context)
+        val input = EditText(context)
+
+        builder.setTitle("Rename your shopping list")
+        input.hint = "New name"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            val shoppingList = shoppingListModels[position]
+
+            shoppingList.shoppingListName = input.text.toString()
+
+            databaseManager.updateShoppingList(username, shoppingList)
+
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
     fun insertItem(item: ShoppingListModel) {
         databaseManager.writeShoppingList(username, item)
 
@@ -103,6 +131,12 @@ class ShoppingListAdapter(
         val shoppingList = shoppingListModels[position]
 
         databaseManager.removeShoppingList(username, shoppingList.shoppingListName)
+    }
+
+    fun updateItem(item: ShoppingListModel, position: Int) {
+        val shoppingList = shoppingListModels[position]
+
+        databaseManager.updateShoppingList(username, shoppingList)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {

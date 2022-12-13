@@ -1,20 +1,22 @@
 package com.example.shoppinglist.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.Settings.Secure
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.R
+import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.manager.InternetManager
-import com.example.shoppinglist.model.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var databaseManager: DatabaseManager
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var signupButton: Button
-    private lateinit var offlineButton: Button
+    private lateinit var loginWithoutAccountButton: Button
     private lateinit var editTextsWatcher: TextWatcher
 
     val context = this
@@ -43,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.login_editText_password)
         loginButton = findViewById(R.id.login_button_login)
         signupButton = findViewById(R.id.login_button_signup)
-        offlineButton = findViewById(R.id.login_button_offline)
+        loginWithoutAccountButton = findViewById(R.id.login_button_offline)
 
         editTextsWatcher = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -75,8 +77,8 @@ class LoginActivity : AppCompatActivity() {
             activityManager.startActivity(SignupActivity::class.java)
         }
 
-        offlineButton.setOnClickListener {
-            activityManager.startActivity(ShoppingListActivity::class.java)
+        loginWithoutAccountButton.setOnClickListener {
+            activityManager.startActivityWithResources(getAndroidId(), ShoppingListActivity::class.java)
         }
     }
 
@@ -91,8 +93,6 @@ class LoginActivity : AppCompatActivity() {
                         val username = dataSnapshot.key.toString()
                         val email = dataSnapshot.child("email").value.toString()
                         val password = dataSnapshot.child("password").value.toString()
-
-                        val user = UserModel(username, email, password)
 
                         if (username == usernameEditText.text.toString() &&
                             password == passwordEditText.text.toString()) {
@@ -113,6 +113,11 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(context, "Authorization error", Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    @SuppressLint("HardwareIds")
+    private fun getAndroidId(): String {
+        return Secure.getString(contentResolver, Secure.ANDROID_ID)
     }
 
     override fun onBackPressed() {

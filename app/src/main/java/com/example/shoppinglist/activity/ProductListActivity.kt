@@ -82,7 +82,7 @@ class ProductListActivity : AppCompatActivity() {
         builder.setView(input)
 
         builder.setPositiveButton("OK") { _, _ ->
-            val product = ProductModel(input.text.toString(), R.id.imageView_icon, "10", false)
+            val product = ProductModel(input.text.toString(),"10", false)
 
             productListAdapter.insertItem(product)
         }
@@ -105,12 +105,10 @@ class ProductListActivity : AppCompatActivity() {
                     for (dataSnapshot in snapshot.children) {
 
                         val productName = dataSnapshot.key.toString()
-                        val categoryIcon =
-                            dataSnapshot.child("categoryIcon").value.toString().toInt()
                         val quantity = dataSnapshot.child("quantity").value.toString()
                         val bought = dataSnapshot.child("bought").value.toString().toBoolean()
 
-                        val productModel = ProductModel(productName, categoryIcon, quantity, bought)
+                        val productModel = ProductModel(productName, quantity, bought)
 
                         productModels.add(productModel)
                     }
