@@ -84,11 +84,6 @@ class ShoppingListAdapter(
                 return true
             }
 
-            R.id.shopping_list_menu_share -> {
-
-                return true
-            }
-
             else -> return false
         }
     }
@@ -107,7 +102,7 @@ class ShoppingListAdapter(
 
             changedShoppingList.shoppingListName = input.text.toString()
 
-            databaseManager.updateShoppingList(username, changedShoppingList)
+            databaseManager.updateShoppingList(username, shoppingList, changedShoppingList)
 
             Snackbar
                 .make(itemView, "Renamed " + shoppingList.shoppingListName, Snackbar.LENGTH_LONG)
@@ -144,7 +139,7 @@ class ShoppingListAdapter(
     fun updateItem(item: ShoppingListModel, position: Int) {
         val shoppingList = shoppingListModels[position]
 
-        databaseManager.updateShoppingList(username, shoppingList)
+        databaseManager.updateShoppingList(username, shoppingList, item)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {

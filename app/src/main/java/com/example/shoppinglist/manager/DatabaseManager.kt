@@ -127,9 +127,9 @@ class DatabaseManager {
         TODO()
     }
 
-    fun updateShoppingList(username: String, shoppingList: ShoppingListModel) {
+    fun updateShoppingList(username: String, oldShoppingList: ShoppingListModel, newShoppingList: ShoppingListModel) {
         val shoppingListValues = mapOf(
-            "shoppingListName" to shoppingList.shoppingListName
+            "shoppingListName" to newShoppingList.shoppingListName
         )
 
         databaseReference
@@ -142,7 +142,7 @@ class DatabaseManager {
                         val key = childSnapshot.key.toString()
                         val shoppingListName = childSnapshot.child("shoppingListName").value.toString()
 
-                        if (shoppingListName == shoppingList.shoppingListName) {
+                        if (shoppingListName == oldShoppingList.shoppingListName) {
                             databaseReference.child(DatabaseMainObject.shoppingLists).child(key).updateChildren(shoppingListValues)
                             return
                         }

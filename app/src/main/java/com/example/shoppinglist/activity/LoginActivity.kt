@@ -14,6 +14,7 @@ import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.manager.InternetManager
 import com.example.shoppinglist.model.UserModel
+import com.example.shoppinglist.property.DatabaseMainObject
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -79,21 +80,43 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginWithoutAccountButton.setOnClickListener {
+            val androidId = getAndroidId()
+
             val user = UserModel(
-                getAndroidId(),
+                androidId,
                 "No email",
                 "No password"
             )
 
-            databaseManager.writeUser(user)
-                .addOnCompleteListener {
-                    Toast.makeText(context, "Nice to see you", Toast.LENGTH_SHORT).show()
-                    activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
-                }.addOnCanceledListener {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                }.addOnFailureListener {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                }
+            databaseManager
+                .getUsersReference()
+                .orderByChild("username")
+                .equalTo(androidId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (childSnapshot in snapshot.children) {
+                            val username = childSnapshot.child("username").value.toString()
+
+                            if (username == androidId) {
+                                Toast.makeText(context, "Nice to see you", Toast.LENGTH_SHORT).show()
+                                activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
+                                return
+                            }
+                        }
+
+                        databaseManager.writeUser(user)
+                            .addOnCompleteListener {
+                                Toast.makeText(context, "Nice to see you", Toast.LENGTH_SHORT).show()
+                                activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
+                            }.addOnCanceledListener {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
         }
     }
 
