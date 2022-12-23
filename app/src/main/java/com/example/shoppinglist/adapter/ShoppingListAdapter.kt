@@ -11,6 +11,7 @@ import com.example.shoppinglist.R
 import com.example.shoppinglist.activity.ProductListActivity
 import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
+import com.example.shoppinglist.model.ProductModel
 import com.example.shoppinglist.model.ShoppingListModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -63,12 +64,13 @@ class ShoppingListAdapter(
 
             R.id.shopping_list_menu_delete -> {
                 val removedShoppingList = shoppingListModels[position]
+                val removedProductsInShoppingList = databaseManager.getAllProducts(username, removedShoppingList.shoppingListName)
 
                 removeItem(position)
 
                 Snackbar
                     .make(itemView, "Deleted " + removedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo") { insertItem(removedShoppingList) }
+                    .setAction("Undo") { insertItem(removedShoppingList, removedProductsInShoppingList) }
                     .show()
 
                 return true
@@ -105,7 +107,7 @@ class ShoppingListAdapter(
 
             changedShoppingList.shoppingListName = input.text.toString()
 
-            databaseManager.updateShoppingList(username, shoppingList)
+            databaseManager.updateShoppingList(username, changedShoppingList)
 
             Snackbar
                 .make(itemView, "Renamed " + shoppingList.shoppingListName, Snackbar.LENGTH_LONG)
@@ -121,8 +123,14 @@ class ShoppingListAdapter(
         builder.show()
     }
 
-    fun insertItem(item: ShoppingListModel) {
-        databaseManager.writeShoppingList(username, item)
+    fun insertItem(item: ShoppingListModel, products: ArrayList<ProductModel>?) {
+        databaseManager.writeShoppingList(item)
+
+        if (products != null) {
+            for (product in products) {
+                databaseManager.writeProduct(product)
+            }
+        }
 
         Toast.makeText(context, "Added ${item.shoppingListName}", Toast.LENGTH_SHORT).show()
     }

@@ -18,7 +18,7 @@ import com.example.shoppinglist.adapter.ShoppingListAdapter
 import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.ShoppingListModel
-import com.example.shoppinglist.model.UserModel
+import com.example.shoppinglist.property.DatabaseMainObject
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -86,9 +86,9 @@ class ShoppingListActivity : AppCompatActivity() {
         builder.setView(input)
 
         builder.setPositiveButton("OK") { _, _ ->
-            val shoppingList = ShoppingListModel(input.text.toString(), R.id.imageView_icon)
+            val shoppingList = ShoppingListModel(username, input.text.toString())
 
-            shoppingListAdapter.insertItem(shoppingList)
+            shoppingListAdapter.insertItem(shoppingList, null)
         }
 
         builder.setNegativeButton("Cancel") { dialog, _ ->
@@ -99,7 +99,10 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     private fun setShoppingListModelsChangeEvent() {
-        databaseManager.getShoppingListsReference(username)
+        databaseManager
+            .getShoppingListsReference()
+            .orderByChild("username")
+            .equalTo(username)
             .addValueEventListener(object: ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -107,11 +110,8 @@ class ShoppingListActivity : AppCompatActivity() {
                     shoppingListModels.clear()
 
                     for (dataSnapshot in snapshot.children) {
-
-                        val shoppingListName = dataSnapshot?.key.toString()
-                        val iconImageViewId = dataSnapshot.child("iconImageViewId").value.toString().toInt()
-
-                        val shoppingListModel = ShoppingListModel(shoppingListName, iconImageViewId)
+                        val shoppingListName = dataSnapshot?.child("shoppingListName")?.value.toString()
+                        val shoppingListModel = ShoppingListModel(username, shoppingListName)
 
                         shoppingListModels.add(shoppingListModel)
                     }

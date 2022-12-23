@@ -67,7 +67,6 @@ class SignupActivity: AppCompatActivity()  {
                 }.addOnFailureListener {
                     Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
                 }
-
         }
     }
 }

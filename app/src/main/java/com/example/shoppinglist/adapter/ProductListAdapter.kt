@@ -64,7 +64,7 @@ class ProductListAdapter(
     }
 
     fun insertItem(item: ProductModel) {
-        databaseManager.writeProduct(username, shoppingListName, item)
+        databaseManager.writeProduct(item)
 
         Toast.makeText(context, "Added ${item.productName}", Toast.LENGTH_SHORT).show()
     }

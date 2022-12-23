@@ -85,7 +85,7 @@ class ProductListActivity : AppCompatActivity() {
         builder.setView(input)
 
         builder.setPositiveButton("OK") { _, _ ->
-            val product = ProductModel(input.text.toString(),"10", false)
+            val product = ProductModel(username, shoppingListName, input.text.toString(),"10", false)
 
             productListAdapter.insertItem(product)
         }
@@ -98,7 +98,9 @@ class ProductListActivity : AppCompatActivity() {
     }
 
     private fun setProductModelsChangeEvent() {
-        databaseManager.getProductsReference(username, shoppingListName)
+        databaseManager.getProductsReference()
+            .orderByChild("username")
+            .equalTo(username)
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -106,14 +108,16 @@ class ProductListActivity : AppCompatActivity() {
                     productModels.clear()
 
                     for (dataSnapshot in snapshot.children) {
-
-                        val productName = dataSnapshot.key.toString()
+                        val shoppingList = dataSnapshot.child("shoppingListName").value.toString()
+                        val productName = dataSnapshot.child("productName").value.toString()
                         val quantity = dataSnapshot.child("quantity").value.toString()
                         val bought = dataSnapshot.child("bought").value.toString().toBoolean()
 
-                        val productModel = ProductModel(productName, quantity, bought)
+                        if (shoppingList == shoppingListName) {
+                            val productModel = ProductModel(username, shoppingListName, productName, quantity, bought)
 
-                        productModels.add(productModel)
+                            productModels.add(productModel)
+                        }
                     }
 
                     productListAdapter.notifyDataSetChanged()

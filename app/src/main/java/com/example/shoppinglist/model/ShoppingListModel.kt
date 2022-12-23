@@ -1,6 +1,6 @@
 package com.example.shoppinglist.model
 
 class ShoppingListModel(
-    var shoppingListName: String,
-    var iconImageViewId: Int
+    var username: String, //FK
+    var shoppingListName: String
 ) : Model

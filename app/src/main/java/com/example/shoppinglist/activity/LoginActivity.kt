@@ -13,6 +13,7 @@ import com.example.shoppinglist.R
 import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.manager.InternetManager
+import com.example.shoppinglist.model.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -78,7 +79,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginWithoutAccountButton.setOnClickListener {
-            activityManager.startActivityWithResources(getAndroidId(), ShoppingListActivity::class.java)
+            val user = UserModel(
+                getAndroidId(),
+                "No email",
+                "No password"
+            )
+
+            databaseManager.writeUser(user)
+                .addOnCompleteListener {
+                    Toast.makeText(context, "Nice to see you", Toast.LENGTH_SHORT).show()
+                    activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
+                }.addOnCanceledListener {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
@@ -90,8 +105,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     for (dataSnapshot in snapshot.children) {
-                        val username = dataSnapshot.key.toString()
-                        val email = dataSnapshot.child("email").value.toString()
+                        val username = dataSnapshot.child("username").value.toString()
                         val password = dataSnapshot.child("password").value.toString()
 
                         if (username == usernameEditText.text.toString() &&
