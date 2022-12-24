@@ -6,8 +6,10 @@ import com.example.shoppinglist.model.ProductModel
 import com.example.shoppinglist.model.ShoppingListModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
+import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
+import com.google.firebase.database.DataSnapshot
 
 class DatabaseManager {
     private var databaseReference: DatabaseReference =
@@ -46,7 +48,14 @@ class DatabaseManager {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (childSnapshot in snapshot.children) {
-                        childSnapshot.ref.removeValue()
+                        val key = childSnapshot.key.toString()
+                        val user = childSnapshot.child("username").value.toString()
+
+                        if (user == username) {
+                            removeAllShoppingLists(username)
+                            databaseReference.child(DatabaseMainObject.shoppingLists).child(key).removeValue()
+                            return
+                        }
                     }
                 }
 
@@ -123,6 +132,26 @@ class DatabaseManager {
             })
     }
 
+    fun removeAllShoppingLists(username: String) {
+        databaseReference
+            .child(DatabaseMainObject.products)
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val key = childSnapshot.key.toString()
+                        val shoppingList = childSnapshot.child("shoppingListName").value.toString()
+
+                        databaseReference.child(DatabaseMainObject.shoppingLists).child(key).removeValue()
+                        removeAllProductsFromShoppingList(username, shoppingList)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+    }
+
     fun updateUser(user: UserModel) {
         TODO()
     }
@@ -179,6 +208,36 @@ class DatabaseManager {
                 override fun onCancelled(error: DatabaseError) {}
             })
     }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun getUser(username: String): CompletableDeferred<UserModel> = GlobalScope.async {
+        val deferred = CompletableDeferred<UserModel>()
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val user = childSnapshot.child("username").value.toString()
+                        val email = childSnapshot.child("email").value.toString()
+                        val password = childSnapshot.child("password").value.toString()
+
+                        if (user == username) {
+                            deferred.complete(UserModel(user, email, password))
+                            return
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(UserModel("No username found", "No email found", ""))
+                }
+            })
+
+        deferred
+    }.await()
 
     fun getAllProducts(username: String, shoppingListName: String): ArrayList<ProductModel> {
         val products = ArrayList<ProductModel>()

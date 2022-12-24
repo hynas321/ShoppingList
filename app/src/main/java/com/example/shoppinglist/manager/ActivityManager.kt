@@ -40,6 +40,7 @@ class ActivityManager(private val context: Context) {
         val extras = Bundle()
         extras.putSerializable("string1", string1)
         extras.putSerializable("string2", string2)
+        extras.putSerializable("string3", string3)
         intent.putExtras(extras)
 
         context.startActivity(intent)
