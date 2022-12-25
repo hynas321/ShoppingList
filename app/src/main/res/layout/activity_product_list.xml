@@ -41,20 +41,6 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_product_list"
         app:layout_constraintVertical_bias="0.591" />
 
-    <ImageView
-        android:id="@+id/product_list_microphone_imageView"
-        android:layout_width="63dp"
-        android:layout_height="54dp"
-        android:elevation="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/product_list_button_add_product"
-        app:layout_constraintEnd_toEndOf="@+id/product_list_button_add_product"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/product_list_button_add_product"
-        app:layout_constraintTop_toBottomOf="@+id/product_list_recyclerView_product"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_microphone"
-        tools:ignore="ContentDescription" />
-
     <Button
         android:id="@+id/product_list_button_add_product"
         android:layout_width="315dp"

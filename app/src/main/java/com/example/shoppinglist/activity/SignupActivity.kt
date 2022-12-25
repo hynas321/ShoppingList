@@ -28,6 +28,10 @@ class SignupActivity: AppCompatActivity()  {
     private lateinit var signupButton: Button
     private lateinit var editTextsWatcher: TextWatcher
 
+    private lateinit var userExistsToastMessage: String
+    private lateinit var registrationSuccessfulToastMessage: String
+    private lateinit var registrationErrorToastMessage: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
@@ -40,6 +44,10 @@ class SignupActivity: AppCompatActivity()  {
         usernameEditText = findViewById(R.id.signup_editText_username)
         passwordEditText = findViewById(R.id.signup_editText_password)
         signupButton = findViewById(R.id.signup_button)
+
+        userExistsToastMessage = getString(R.string.signup_toast_user_exists)
+        registrationSuccessfulToastMessage = getString(R.string.signup_toast_registration_successful)
+        registrationErrorToastMessage = getString(R.string.signup_toast_registration_error)
 
         editTextsWatcher = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -68,17 +76,15 @@ class SignupActivity: AppCompatActivity()  {
                 }
 
                 if (userExists) {
-                    Toast.makeText(context, "User already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, userExistsToastMessage, Toast.LENGTH_SHORT).show()
                 }
                 else {
                     databaseManager.writeUser(user)
                         .addOnCompleteListener {
-                            Toast.makeText(context, "Welcome ${user.username}!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "$registrationSuccessfulToastMessage ${user.username}!", Toast.LENGTH_SHORT).show()
                             activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
-                        }.addOnCanceledListener {
-                            Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
                         }.addOnFailureListener {
-                            Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, registrationErrorToastMessage, Toast.LENGTH_SHORT).show()
                         }
                 }
             }

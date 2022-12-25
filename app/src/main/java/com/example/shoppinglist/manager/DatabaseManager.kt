@@ -250,7 +250,7 @@ class DatabaseManager {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    deferred.complete(UserModel("No username found", "No email found", ""))
+                    deferred.complete(UserModel("???", "???", ""))
                 }
             })
 

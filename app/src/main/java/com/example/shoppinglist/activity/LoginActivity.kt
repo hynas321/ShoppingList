@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -34,11 +35,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginWithoutAccountButton: Button
     private lateinit var editTextsWatcher: TextWatcher
 
-    private lateinit var toastLogInSuccessfulMessage: String
-    private lateinit var toastLogInUnsuccessfulMessage: String
-    private lateinit var toastLogInError: String
+    private lateinit var logInSuccessfulToastMessage: String
+    private lateinit var logInUnsuccessfulToastMessage: String
+    private lateinit var logInErrorToastMessage: String
     private lateinit var noEmail: String
-    private lateinit var noPassword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +55,10 @@ class LoginActivity : AppCompatActivity() {
         signupButton = findViewById(R.id.login_button_signup)
         loginWithoutAccountButton = findViewById(R.id.login_button_offline)
 
-        toastLogInSuccessfulMessage = getString(R.string.login_toast_login_successful)
-        toastLogInUnsuccessfulMessage = getString(R.string.login_toast_login_unsuccessful)
-        toastLogInError = getString(R.string.login_toast_login_error)
+        logInSuccessfulToastMessage = getString(R.string.login_toast_login_successful)
+        logInUnsuccessfulToastMessage = getString(R.string.login_toast_login_unsuccessful)
+        logInErrorToastMessage = getString(R.string.login_toast_login_error)
         noEmail = getString(R.string.login_no_email_object_value)
-        noPassword = getString(R.string.login_no_password_object_value)
 
         editTextsWatcher = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -92,6 +91,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginWithoutAccountButton.setOnClickListener {
+            if (!internetManager.checkInternetConnection()) {
+                return@setOnClickListener
+            }
+
             logInWithoutAccount()
         }
     }
@@ -107,11 +110,11 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (authenticated) {
-                Toast.makeText(context, "$toastLogInSuccessfulMessage ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "$logInSuccessfulToastMessage ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
 
                 activityManager.startActivityWithResources(usernameEditText.text.toString(), ShoppingListActivity::class.java)
             } else {
-                Toast.makeText(context, toastLogInUnsuccessfulMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, logInUnsuccessfulToastMessage, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -119,28 +122,28 @@ class LoginActivity : AppCompatActivity() {
     private fun logInWithoutAccount() {
         val androidId = getAndroidId()
 
-        val user = UserModel(
-            androidId,
-            noEmail,
-            noPassword
-        )
-
         CoroutineScope(Dispatchers.Main).launch {
             val userExists = withContext(Dispatchers.IO) {
                 databaseManager.checkIfUserExists(androidId).await()
             }
 
             if (userExists) {
-                Toast.makeText(context, toastLogInSuccessfulMessage, Toast.LENGTH_SHORT).show()
-                activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
+                Toast.makeText(context, logInSuccessfulToastMessage, Toast.LENGTH_SHORT).show()
+                activityManager.startActivityWithResources(androidId, ShoppingListActivity::class.java)
             }
             else {
-                databaseManager.writeUser(user)
+                val newUser = UserModel(
+                    androidId,
+                    noEmail,
+                    UUID.randomUUID().toString()
+                )
+
+                databaseManager.writeUser(newUser)
                     .addOnCompleteListener {
-                        Toast.makeText(context, toastLogInSuccessfulMessage, Toast.LENGTH_SHORT).show()
-                        activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
+                        Toast.makeText(context, logInSuccessfulToastMessage, Toast.LENGTH_SHORT).show()
+                        activityManager.startActivityWithResources(newUser.username, ShoppingListActivity::class.java)
                     }.addOnFailureListener {
-                        Toast.makeText(context, toastLogInError, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, logInErrorToastMessage, Toast.LENGTH_SHORT).show()
                     }
             }
         }
@@ -152,6 +155,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        moveTaskToBack(true);
+        moveTaskToBack(true)
     }
 }

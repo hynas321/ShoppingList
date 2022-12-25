@@ -52,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <include
         android:id="@+id/custom_navigation_bar_1"
         layout="@layout/custom_navigation_bar_1"

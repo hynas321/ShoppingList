@@ -83,52 +83,48 @@
 
     <Button
         android:id="@+id/settings_change_password_button"
-        android:layout_width="match_parent"
+        android:layout_width="315dp"
         android:layout_height="60dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="24dp"
         android:text="@string/settings_change_password_button"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_textView_account_management" />
 
     <Button
         android:id="@+id/settings_change_email_button"
-        android:layout_width="match_parent"
+        android:layout_width="315dp"
         android:layout_height="60dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="24dp"
         android:text="@string/settings_change_email_button"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_change_password_button" />
 
     <Button
         android:id="@+id/settings_remove_account_button"
-        android:layout_width="match_parent"
+        android:layout_width="315dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/settings_remove_account_button"
         android:textColor="@color/red"
         android:textSize="@dimen/button_textSize"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_change_email_button" />
 
     <Button
         android:id="@+id/settings_button_log_out"
-        android:layout_width="match_parent"
+        android:layout_width="315dp"
         android:layout_height="60dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/settings_button_log_out"
         android:textColor="@color/yellow"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_remove_account_button" />
 

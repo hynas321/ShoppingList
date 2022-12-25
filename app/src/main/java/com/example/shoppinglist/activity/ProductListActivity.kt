@@ -37,6 +37,10 @@ class ProductListActivity : AppCompatActivity() {
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
 
+    private lateinit var productModels: ArrayList<ProductModel>
+    private lateinit var username: String
+    private lateinit var shoppingListName: String
+
     private lateinit var productListAdapter: ProductListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -45,9 +49,16 @@ class ProductListActivity : AppCompatActivity() {
     private lateinit var navigationBar: ConstraintLayout
     private lateinit var navigationBarSettingsButton: View
 
-    private lateinit var productModels: ArrayList<ProductModel>
-    private lateinit var username: String
-    private lateinit var shoppingListName: String
+    private lateinit var titleAlertDialog: String
+    private lateinit var nameHintAlertDialog: String
+    private lateinit var quantityHintAlertDialog: String
+    private lateinit var positiveButtonAlertDialog: String
+    private lateinit var negativeButtonAlertDialog: String
+    private lateinit var quantity: String
+    private lateinit var noQuantity: String
+    private lateinit var noProductNameToastMessage: String
+    private lateinit var productExistsToastMessage: String
+    private lateinit var dataAccessErrorToastMessage: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +84,17 @@ class ProductListActivity : AppCompatActivity() {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = productListAdapter
 
+        titleAlertDialog = getString(R.string.product_alertDialog_title)
+        nameHintAlertDialog = getString(R.string.product_alertDialog_name_hint)
+        quantityHintAlertDialog = getString(R.string.product_alertDialog_quantity_hint)
+        positiveButtonAlertDialog = getString(R.string.product_alertDialog_positive_button)
+        negativeButtonAlertDialog = getString(R.string.product_alertDialog_negative_button)
+        quantity = getString(R.string.product_textView_product_quantity)
+        noQuantity = getString(R.string.product_textView_no_product_quantity)
+        noProductNameToastMessage = getString(R.string.product_toast_no_product_name)
+        productExistsToastMessage = getString(R.string.product_toast_product_exists)
+        dataAccessErrorToastMessage = getString(R.string.product_toast_data_access_error)
+
         addProductButton.setOnClickListener {
             createItemAlertDialog()
         }
@@ -88,36 +110,36 @@ class ProductListActivity : AppCompatActivity() {
         val quantityInput = EditText(this)
         val layout = LinearLayout(this)
 
-        nameInput.hint = "Name"
+        nameInput.hint = nameHintAlertDialog
         nameInput.inputType = InputType.TYPE_CLASS_TEXT
         nameInput.height = 150
         nameInput.gravity = Gravity.CENTER
 
-        quantityInput.hint = "Quantity"
+        quantityInput.hint = quantityHintAlertDialog
         quantityInput.inputType = InputType.TYPE_CLASS_TEXT
         quantityInput.height = 150
         quantityInput.gravity = Gravity.CENTER
 
         layout.orientation = LinearLayout.VERTICAL
 
-        builder.setTitle("Add a new product")
+        builder.setTitle(titleAlertDialog)
         layout.addView(nameInput)
         layout.addView(quantityInput)
         builder.setView(layout)
 
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
             val productName = nameInput.text.toString()
             var productQuantity = quantityInput.text.toString()
 
             if (productName == "") {
-                Toast.makeText(context, "Cannot create the product with no name", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, noProductNameToastMessage, Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
             }
-            if (productQuantity == "") {
-                productQuantity = "No quantity"
-            }
-            else {
-                productQuantity = "Quantity: $productQuantity"
+
+            productQuantity = if (productQuantity == "") {
+                noQuantity
+            } else {
+                "$quantity: $productQuantity"
             }
 
             val product =
@@ -133,12 +155,12 @@ class ProductListActivity : AppCompatActivity() {
                     productListAdapter.insertItem(product)
                 }
                 else {
-                    Toast.makeText(context, "Product already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, productExistsToastMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -179,7 +201,7 @@ class ProductListActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(context, "Error, cannot access data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, dataAccessErrorToastMessage, Toast.LENGTH_SHORT).show()
                 }
             })
     }

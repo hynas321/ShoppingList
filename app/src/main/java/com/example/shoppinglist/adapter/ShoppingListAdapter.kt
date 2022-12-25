@@ -29,6 +29,15 @@ class ShoppingListAdapter(
     private val databaseManager: DatabaseManager = DatabaseManager()
     private val activityManager: ActivityManager = ActivityManager(context)
 
+    private val undoMessage: String = context.getString(R.string.adapter_message_undo)
+    private val addedMessage: String = context.getString(R.string.adapter_message_added)
+    private val removedMessage: String = context.getString(R.string.adapter_message_removed)
+    private val renamedMessage: String = context.getString(R.string.adapter_message_renamed)
+    private val positiveButtonAlertDialog: String = context.getString(R.string.shopping_list_alertDialog_positive_button)
+    private val negativeButtonAlertDialog: String = context.getString(R.string.shopping_list_alertDialog_negative_button)
+    private val renameShoppingListTitleAlertDialog: String = context.getString(R.string.adapter_alertDialog_rename_shopping_list)
+    private val nameShoppingListHintAlertDialog: String = context.getString(R.string.adapter_alertDialog_new_shopping_list_name)
+
     inner class ShoppingListViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
 
@@ -79,8 +88,8 @@ class ShoppingListAdapter(
                 removeItem(position)
 
                 Snackbar
-                    .make(itemView, "Deleted " + removedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo") { insertItem(removedShoppingList, removedProductsInShoppingList) }
+                    .make(itemView, "$removedMessage " + removedShoppingList.shoppingListName, Snackbar.LENGTH_LONG)
+                    .setAction(undoMessage) { insertItem(removedShoppingList, removedProductsInShoppingList) }
                     .show()
 
                 return true
@@ -102,12 +111,12 @@ class ShoppingListAdapter(
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
-        builder.setTitle("Rename your shopping list")
-        input.hint = "New name"
+        builder.setTitle(renameShoppingListTitleAlertDialog)
+        input.hint = nameShoppingListHintAlertDialog
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
             val changedShoppingList = shoppingListModels[position]
 
             changedShoppingList.shoppingListName = input.text.toString()
@@ -115,13 +124,13 @@ class ShoppingListAdapter(
             databaseManager.updateShoppingList(username, shoppingList, changedShoppingList)
 
             Snackbar
-                .make(itemView, "Renamed " + shoppingList.shoppingListName, Snackbar.LENGTH_LONG)
-                .setAction("Undo") { updateItem(shoppingList, position) }
+                .make(itemView, "$renamedMessage " + shoppingList.shoppingListName, Snackbar.LENGTH_LONG)
+                .setAction(undoMessage) { updateItem(shoppingList, position) }
                 .show()
 
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -137,7 +146,7 @@ class ShoppingListAdapter(
             }
         }
 
-        Toast.makeText(context, "Added ${item.shoppingListName}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "$addedMessage ${item.shoppingListName}", Toast.LENGTH_SHORT).show()
     }
 
     private fun removeItem(position: Int) {

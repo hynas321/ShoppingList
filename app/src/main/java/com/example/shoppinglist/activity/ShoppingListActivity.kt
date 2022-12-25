@@ -35,6 +35,9 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
 
+    private lateinit var shoppingListModels: ArrayList<ShoppingListModel>
+    private lateinit var username: String
+
     private lateinit var shoppingListAdapter: ShoppingListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -43,8 +46,13 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var navigationBar: ConstraintLayout
     private lateinit var navigationBarSettingsButton: View
 
-    private lateinit var shoppingListModels: ArrayList<ShoppingListModel>
-    private lateinit var username: String
+    private lateinit var titleAlertDialog: String
+    private lateinit var nameHintAlertDialog: String
+    private lateinit var positiveButtonAlertDialog: String
+    private lateinit var negativeButtonAlertDialog: String
+    private lateinit var noShoppingListNameToastMessage: String
+    private lateinit var shoppingListExistsToastMessage: String
+    private lateinit var dataAccessErrorToastMessage: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +76,14 @@ class ShoppingListActivity : AppCompatActivity() {
         navigationBar = findViewById(R.id.custom_navigation_bar_1)
         navigationBarSettingsButton = navigationBar.settings_icon
 
+        titleAlertDialog = getString(R.string.shopping_list_alertDialog_title)
+        nameHintAlertDialog = getString(R.string.shopping_list_alertDialog_name_hint)
+        positiveButtonAlertDialog = getString(R.string.shopping_list_alertDialog_positive_button)
+        negativeButtonAlertDialog = getString(R.string.shopping_list_alertDialog_negative_button)
+        noShoppingListNameToastMessage = getString(R.string.shopping_list_toast_no_shopping_list_name)
+        shoppingListExistsToastMessage = getString(R.string.shopping_list_toast_shopping_list_exists)
+        dataAccessErrorToastMessage = getString(R.string.shopping_list_data_access_error)
+
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = shoppingListAdapter
 
@@ -84,19 +100,19 @@ class ShoppingListActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
-        input.hint = "Enter name"
+        input.hint = nameHintAlertDialog
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.height = 150
         input.gravity = Gravity.CENTER
 
-        builder.setTitle("Add a new shopping list")
+        builder.setTitle(titleAlertDialog)
         builder.setView(input)
 
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
             val shoppingListName = input.text.toString()
 
             if (shoppingListName == "") {
-                Toast.makeText(context, "Cannot create the list with no name", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, noShoppingListNameToastMessage, Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
             }
 
@@ -111,12 +127,12 @@ class ShoppingListActivity : AppCompatActivity() {
                     shoppingListAdapter.insertItem(shoppingList, null)
                 }
                 else {
-                    Toast.makeText(context, "Shopping list already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, shoppingListExistsToastMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -153,7 +169,7 @@ class ShoppingListActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(context, "Error, cannot access data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, dataAccessErrorToastMessage, Toast.LENGTH_SHORT).show()
                 }
             })
     }

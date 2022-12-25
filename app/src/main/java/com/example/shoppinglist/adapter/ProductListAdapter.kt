@@ -21,6 +21,13 @@ class ProductListAdapter(
 
     private val databaseManager: DatabaseManager = DatabaseManager()
 
+    private val limeColor = "#B0FFC2"
+    private val whiteColor = "#FFFFFF"
+
+    private val undoMessage: String = context.getString(R.string.adapter_message_undo)
+    private val addedMessage: String = context.getString(R.string.adapter_message_added)
+    private val removedMessage: String = context.getString(R.string.adapter_message_removed)
+
     inner class ProductViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
 
@@ -44,8 +51,8 @@ class ProductListAdapter(
                 databaseManager.removeProduct(username, shoppingListName, removedProduct.productName)
 
                 Snackbar
-                    .make(itemView, "Deleted " + removedProduct.productName, Snackbar.LENGTH_LONG)
-                    .setAction("Undo") { insertItem(removedProduct) }
+                    .make(itemView, "$removedMessage " + removedProduct.productName, Snackbar.LENGTH_LONG)
+                    .setAction(undoMessage) { insertItem(removedProduct) }
                     .show()
             }
 
@@ -57,10 +64,10 @@ class ProductListAdapter(
                 databaseManager.updateProduct(username, shoppingListName, updatedProduct)
 
                 if (updatedProduct.bought) {
-                    itemView.setBackgroundColor(Color.parseColor("#B0FFC2"))
+                    itemView.setBackgroundColor(Color.parseColor(limeColor))
                 }
                 else {
-                    itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                    itemView.setBackgroundColor(Color.parseColor(whiteColor))
                 }
             }
         }
@@ -69,7 +76,7 @@ class ProductListAdapter(
     fun insertItem(item: ProductModel) {
         databaseManager.writeProduct(item)
 
-        Toast.makeText(context, "Added ${item.productName}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "$addedMessage ${item.productName}", Toast.LENGTH_SHORT).show()
     }
 
     fun removeItem(position: Int) {
@@ -89,11 +96,11 @@ class ProductListAdapter(
         val product = productModels[position]
 
         holder.productBoughtCheckBox.isChecked = false
-        holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        holder.itemView.setBackgroundColor(Color.parseColor(whiteColor))
 
         if (product.bought) {
             holder.productBoughtCheckBox.isChecked = true
-            holder.itemView.setBackgroundColor(Color.parseColor("#B0FFC2"))
+            holder.itemView.setBackgroundColor(Color.parseColor(limeColor))
         }
 
         holder.productName.text = product.productName

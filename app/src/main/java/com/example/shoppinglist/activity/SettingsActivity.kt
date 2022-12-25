@@ -38,6 +38,19 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var navigationBar: ConstraintLayout
     private lateinit var navigationBarListButton: View
 
+    private lateinit var logOutToastMessage: String
+    private lateinit var passwordTitleAlertDialog: String
+    private lateinit var passwordHintAlertDialog: String
+    private lateinit var emailTitleAlertDialog: String
+    private lateinit var emailHintAlertDialog: String
+    private lateinit var accountDeletionAlertDialog: String
+    private lateinit var positiveButtonAlertDialog: String
+    private lateinit var negativeButtonAlertDialog: String
+    private lateinit var passwordSetToastMessage: String
+    private lateinit var emailSetToastMessage: String
+    private lateinit var accountDeletedToastMessage: String
+    private lateinit var dataAccessErrorToastMessage: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -58,6 +71,19 @@ class SettingsActivity : AppCompatActivity() {
         logOutButton = findViewById(R.id.settings_button_log_out)
         navigationBar = findViewById(R.id.custom_navigation_bar_2)
         navigationBarListButton = navigationBar.list_icon
+
+        logOutToastMessage = getString(R.string.settings_toast_log_out)
+        passwordTitleAlertDialog = getString(R.string.settings_alertDialog_password_title)
+        passwordHintAlertDialog = getString(R.string.settings_alertDialog_password_hint)
+        emailTitleAlertDialog = getString(R.string.settings_alertDialog_email_title)
+        emailHintAlertDialog = getString(R.string.settings_alertDialog_email_hint)
+        accountDeletionAlertDialog = getString(R.string.settings_alertDialog_account_deletion)
+        positiveButtonAlertDialog = getString(R.string.settings_alertDialog_positive_button)
+        negativeButtonAlertDialog = getString(R.string.settings_alertDialog_negative_button)
+        passwordSetToastMessage = getString(R.string.settings_toast_password_set)
+        emailSetToastMessage = getString(R.string.settings_toast_email_set)
+        accountDeletedToastMessage = getString(R.string.settings_toast_account_deleted)
+        dataAccessErrorToastMessage = getString(R.string.settings_toast_data_access_error)
 
         CoroutineScope(Dispatchers.Main).launch {
             user = withContext(Dispatchers.IO) {
@@ -81,7 +107,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         logOutButton.setOnClickListener {
-            Toast.makeText(context, "You have logged out", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, logOutToastMessage, Toast.LENGTH_SHORT).show()
             activityManager.startActivityWithResources("", LoginActivity::class.java)
         }
 
@@ -94,23 +120,23 @@ class SettingsActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
-        input.hint = "Enter Text"
+        input.hint = passwordHintAlertDialog
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.height = 150
         input.gravity = Gravity.CENTER
 
-        builder.setTitle("Set your new password")
+        builder.setTitle(passwordTitleAlertDialog)
         builder.setView(input)
 
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
             val newUser = UserModel(user.username, user.email, input.text.toString())
 
             databaseManager.updateUser(user, newUser)
 
-            Toast.makeText(context, "New password has been set", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, passwordSetToastMessage, Toast.LENGTH_SHORT).show()
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -121,23 +147,23 @@ class SettingsActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
-        input.hint = "Enter Text"
+        input.hint = emailHintAlertDialog
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.height = 150
         input.gravity = Gravity.CENTER
 
-        builder.setTitle("Set your new email address")
+        builder.setTitle(emailTitleAlertDialog)
         builder.setView(input)
 
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
             val newUser = UserModel(user.username, input.text.toString(), user.password)
 
             databaseManager.updateUser(user, newUser)
 
-            Toast.makeText(context, "New email address: ${input.text}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "$emailSetToastMessage: ${input.text}", Toast.LENGTH_SHORT).show()
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -147,17 +173,17 @@ class SettingsActivity : AppCompatActivity() {
     private fun displayRemoveAccountAlertDialog() {
         val builder = AlertDialog.Builder(context)
 
-        builder.setTitle("Deletion of account cannot be undone. Proceed?")
+        builder.setTitle(accountDeletionAlertDialog)
 
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
             databaseManager.removeUser(username)
 
-            Toast.makeText(context, "Account has been deleted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, accountDeletedToastMessage, Toast.LENGTH_SHORT).show()
 
             activityManager.startActivityWithResources("", LoginActivity::class.java)
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
             dialog.cancel()
         }
 

@@ -3,7 +3,6 @@ package com.example.shoppinglist.manager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.example.shoppinglist.model.Model
 
 class ActivityManager(private val context: Context) {
 
