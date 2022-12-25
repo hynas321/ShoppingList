@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_product_list.view.*
 
 
 class ShoppingListActivity : AppCompatActivity() {
-    val context: AppCompatActivity = this
+    private val context: AppCompatActivity = this
 
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
@@ -99,6 +99,7 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     private fun setShoppingListModelsChangeEvent() {
+
         databaseManager
             .getShoppingListsReference()
             .orderByChild("username")

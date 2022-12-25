@@ -1,10 +1,14 @@
 package com.example.shoppinglist.activity
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.shoppinglist.R
 import com.example.shoppinglist.manager.ActivityManager
@@ -14,6 +18,7 @@ import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
 import kotlinx.coroutines.*
 
 class SettingsActivity : AppCompatActivity() {
+    private val context: AppCompatActivity = this
 
     private lateinit var activityManager: ActivityManager
     private lateinit var databaseManager: DatabaseManager
@@ -25,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var usernameTextView: TextView
     private lateinit var emailTextView: TextView
-    private lateinit var changeUsernameButton: Button
+    private lateinit var removeAccountButton: Button
     private lateinit var changePasswordButton: Button
     private lateinit var changeEmailButton: Button
     private lateinit var logOutButton: Button
@@ -44,11 +49,11 @@ class SettingsActivity : AppCompatActivity() {
         shoppingListName = intent.getStringExtra("string2").toString()
         previousActivityName = intent.getStringExtra("string3").toString()
 
-        usernameTextView = findViewById(R.id.settings_username_textView)
-        emailTextView = findViewById(R.id.settings_email_textView)
-        changeUsernameButton = findViewById(R.id.settings_change_username_button)
+        usernameTextView = findViewById(R.id.settings_username_set_textView)
+        emailTextView = findViewById(R.id.settings_email_set_textView)
         changePasswordButton = findViewById(R.id.settings_change_password_button)
         changeEmailButton = findViewById(R.id.settings_change_email_button)
+        removeAccountButton = findViewById(R.id.settings_remove_account_button)
         logOutButton = findViewById(R.id.settings_button_log_out)
         navigationBar = findViewById(R.id.custom_navigation_bar_2)
         navigationBarListButton = navigationBar.list_icon
@@ -60,6 +65,18 @@ class SettingsActivity : AppCompatActivity() {
 
             usernameTextView.text = user.username
             emailTextView.text = user.email
+        }
+
+        changePasswordButton.setOnClickListener {
+            displayChangePasswordAlertDialog()
+        }
+
+        changeEmailButton.setOnClickListener {
+            displayChangeEmailAlertDialog()
+        }
+
+        removeAccountButton.setOnClickListener {
+            displayRemoveAccountAlertDialog()
         }
 
         logOutButton.setOnClickListener {
@@ -74,5 +91,73 @@ class SettingsActivity : AppCompatActivity() {
                 activityManager.startActivityWithResources(username, ShoppingListActivity::class.java)
             }
         }
+    }
+
+    private fun displayChangePasswordAlertDialog() {
+        val builder = AlertDialog.Builder(context)
+        val input = EditText(context)
+
+        builder.setTitle("Set your new password")
+        input.hint = "Enter Text"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            val newUser = UserModel(user.username, user.email, input.text.toString())
+
+            databaseManager.updateUser(user, newUser)
+
+            Toast.makeText(context, "New password has been set", Toast.LENGTH_SHORT).show()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    private fun displayChangeEmailAlertDialog() {
+        val builder = AlertDialog.Builder(context)
+        val input = EditText(context)
+
+        builder.setTitle("Set your new email address")
+        input.hint = "Enter Text"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            val newUser = UserModel(user.username, input.text.toString(), user.password)
+
+            databaseManager.updateUser(user, newUser)
+
+            Toast.makeText(context, "New email address: ${input.text}", Toast.LENGTH_SHORT).show()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    private fun displayRemoveAccountAlertDialog() {
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle("Would you like to delete your account?")
+
+        builder.setPositiveButton("OK") { _, _ ->
+            databaseManager.removeUser(username)
+
+            Toast.makeText(context, "Account has been deleted", Toast.LENGTH_SHORT).show()
+
+            activityManager.startActivityWithResources("", LoginActivity::class.java)
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
     }
 }

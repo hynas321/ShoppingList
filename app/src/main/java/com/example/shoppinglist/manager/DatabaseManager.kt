@@ -49,13 +49,10 @@ class DatabaseManager {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (childSnapshot in snapshot.children) {
                         val key = childSnapshot.key.toString()
-                        val user = childSnapshot.child("username").value.toString()
 
-                        if (user == username) {
-                            removeAllShoppingLists(username)
-                            databaseReference.child(DatabaseMainObject.shoppingLists).child(key).removeValue()
-                            return
-                        }
+                        removeAllShoppingLists(username)
+                        databaseReference.child(DatabaseMainObject.users).child(key).removeValue()
+                        return
                     }
                 }
 
@@ -112,6 +109,7 @@ class DatabaseManager {
     }
 
     fun removeAllProductsFromShoppingList(username: String, shoppingListName: String) {
+
         databaseReference
             .child(DatabaseMainObject.products)
             .orderByChild("username")
@@ -133,8 +131,9 @@ class DatabaseManager {
     }
 
     fun removeAllShoppingLists(username: String) {
+
         databaseReference
-            .child(DatabaseMainObject.products)
+            .child(DatabaseMainObject.shoppingLists)
             .orderByChild("username")
             .equalTo(username)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -152,8 +151,27 @@ class DatabaseManager {
             })
     }
 
-    fun updateUser(user: UserModel) {
-        TODO()
+    fun updateUser(oldUser: UserModel, newUser: UserModel) {
+        val userValues = mapOf(
+            "email" to newUser.email,
+            "password" to newUser.password
+        )
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .orderByChild("username")
+            .equalTo(oldUser.username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val key = childSnapshot.key.toString()
+
+                        databaseReference.child(DatabaseMainObject.users).child(key).updateChildren(userValues)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
     }
 
     fun updateShoppingList(username: String, oldShoppingList: ShoppingListModel, newShoppingList: ShoppingListModel) {
@@ -239,7 +257,10 @@ class DatabaseManager {
         deferred
     }.await()
 
-    fun getAllProducts(username: String, shoppingListName: String): ArrayList<ProductModel> {
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun getAllProducts(username: String, shoppingListName: String):
+            CompletableDeferred<ArrayList<ProductModel>> = GlobalScope.async {
+        val deferred = CompletableDeferred<ArrayList<ProductModel>>()
         val products = ArrayList<ProductModel>()
 
         databaseReference
@@ -258,15 +279,22 @@ class DatabaseManager {
                             products.add(ProductModel(username, shoppingListName, product, quantity, bought as Boolean))
                         }
                     }
+
+                    deferred.complete(products)
                 }
 
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(products)
+                }
             })
 
-        return products
-    }
+        deferred
+    }.await()
 
-    fun getAllShoppingLists(username: String): ArrayList<ShoppingListModel> {
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun getAllShoppingLists(username: String):
+            CompletableDeferred<ArrayList<ShoppingListModel>> = GlobalScope.async {
+        val deferred = CompletableDeferred<ArrayList<ShoppingListModel>>()
         val shoppingLists = ArrayList<ShoppingListModel>()
 
         databaseReference
@@ -280,13 +308,76 @@ class DatabaseManager {
 
                         shoppingLists.add(ShoppingListModel(username, shoppingList))
                     }
+
+                    deferred.complete(shoppingLists)
                 }
 
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(shoppingLists)
+                }
             })
 
-        return shoppingLists
-    }
+        deferred
+    }.await()
+
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun checkIfUserExists(username: String): CompletableDeferred<Boolean> = GlobalScope.async {
+        val deferred = CompletableDeferred<Boolean>()
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val user = childSnapshot.child("username").value.toString()
+
+                        if (user == username) {
+                            deferred.complete(true)
+                            return
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(false)
+                }
+            })
+
+        deferred
+    }.await()
+
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun authenticateUserAccount(inputUsername: String, inputPassword: String): CompletableDeferred<Boolean> = GlobalScope.async {
+        val deferred = CompletableDeferred<Boolean>()
+
+        databaseReference
+            .child(DatabaseMainObject.users)
+            .orderByChild("username")
+            .equalTo(inputUsername)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val username = childSnapshot.child("username").value.toString()
+                        val password = childSnapshot.child("password").value.toString()
+
+                        if (username == inputUsername &&
+                            password == inputPassword) {
+                            deferred.complete(true)
+                        }
+                    }
+
+                    deferred.complete(false)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(false)
+                }
+            })
+
+        deferred
+    }.await()
 
     fun getUsersReference(): DatabaseReference {
 

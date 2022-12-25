@@ -14,6 +14,10 @@ import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.ProductModel
 import com.example.shoppinglist.model.ShoppingListModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ShoppingListAdapter(
@@ -64,7 +68,13 @@ class ShoppingListAdapter(
 
             R.id.shopping_list_menu_delete -> {
                 val removedShoppingList = shoppingListModels[position]
-                val removedProductsInShoppingList = databaseManager.getAllProducts(username, removedShoppingList.shoppingListName)
+                var removedProductsInShoppingList: ArrayList<ProductModel> = ArrayList()
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    removedProductsInShoppingList = withContext(Dispatchers.IO) {
+                        databaseManager.getAllProducts(username, removedShoppingList.shoppingListName).await()
+                    }
+                }
 
                 removeItem(position)
 
