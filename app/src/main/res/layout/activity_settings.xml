@@ -53,32 +53,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_email_set_textView" />
 
-    <TextView
-        android:id="@+id/settings_textView2"
-        android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/lightGreen"
-        android:gravity="center"
-        android:text="Options"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textView_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_remove_account_button" />
-
     <Button
         android:id="@+id/settings_button_log_out"
         android:layout_width="315dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginTop="24dp"
         android:text="Log out"
         android:textSize="@dimen/button_textSize"
-        app:layout_constraintBottom_toTopOf="@+id/custom_navigation_bar_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_remove_account_button" />
 
     <Button
         android:id="@+id/settings_change_password_button"

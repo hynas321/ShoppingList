@@ -29,8 +29,7 @@ import kotlinx.coroutines.withContext
 import android.view.Gravity
 
 import android.widget.LinearLayout
-
-
+import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
 
 
 class ProductListActivity : AppCompatActivity() {
@@ -71,8 +70,7 @@ class ProductListActivity : AppCompatActivity() {
         addProductButton = findViewById(R.id.product_list_button_add_product)
         noItemsTextView = findViewById(R.id.product_list_empty)
         navigationBar = findViewById(R.id.custom_navigation_bar_1)
-        navigationBarSettingsButton = navigationBar.custom_navigation_bar_1
-
+        navigationBarSettingsButton = navigationBar.settings_icon
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = productListAdapter
 

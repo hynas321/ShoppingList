@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_product_list.view.*
+import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,7 +68,7 @@ class ShoppingListActivity : AppCompatActivity() {
         addListButton = findViewById(R.id.shopping_list_button_add_list)
         noItemsTextView = findViewById(R.id.shopping_list_empty)
         navigationBar = findViewById(R.id.custom_navigation_bar_1)
-        navigationBarSettingsButton = navigationBar.custom_navigation_bar_1
+        navigationBarSettingsButton = navigationBar.settings_icon
 
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = shoppingListAdapter
@@ -160,6 +161,6 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        moveTaskToBack(true);
+        moveTaskToBack(true)
     }
 }

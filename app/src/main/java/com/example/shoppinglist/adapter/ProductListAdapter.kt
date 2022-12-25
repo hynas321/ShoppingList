@@ -88,6 +88,9 @@ class ProductListAdapter(
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productModels[position]
 
+        holder.productBoughtCheckBox.isChecked = false
+        holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+
         if (product.bought) {
             holder.productBoughtCheckBox.isChecked = true
             holder.itemView.setBackgroundColor(Color.parseColor("#B0FFC2"))

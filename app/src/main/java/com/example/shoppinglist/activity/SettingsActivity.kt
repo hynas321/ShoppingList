@@ -163,6 +163,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        overridePendingTransition(0, 0)
+        moveTaskToBack(true)
     }
 }
