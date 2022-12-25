@@ -13,17 +13,18 @@
     <string name="login_toast_login_unsuccessful">Incorrect credentials</string>
     <string name="login_toast_login_error">Log in error</string>
     <!-- Other -->
-    <string name="login_no_email_object_value">No email</string>
+    <string name="login_no_email_object_value">-</string>
 
     <!-- SignUp Activity -->
     <string name="signup_editText_email">E-mail</string>
-    <string name="signup_editText_username">Username</string>
-    <string name="signup_editText_password">Password</string>
+    <string name="signup_editText_username">Username (5–15 characters)</string>
+    <string name="signup_editText_password">Password (5–15 characters)</string>
     <string name="signup_button">Sign up</string>
     <!-- Pop-ups -->
     <string name="signup_toast_user_exists">User already exists</string>
     <string name="signup_toast_registration_successful">Welcome</string>
     <string name="signup_toast_registration_error">Registration error</string>
+    <string name="signup_toast_incorrect_email_format">Incorrect email format, example: abc@gmail.com</string>
 
     <!-- Shopping List Activity -->
     <string name="shopping_list_editText_empty">There are no shopping lists to display</string>
@@ -61,9 +62,9 @@
     <!-- Pop-ups -->
     <string name="settings_toast_log_out">You have logged out</string>
     <string name="settings_alertDialog_password_title">Set your new password</string>
-    <string name="settings_alertDialog_password_hint">Enter password</string>
+    <string name="settings_alertDialog_password_hint">Enter new password (5–15 characters)</string>
     <string name="settings_alertDialog_email_title">Set your new email</string>
-    <string name="settings_alertDialog_email_hint">Enter e-mail address</string>
+    <string name="settings_alertDialog_email_hint">Enter new e-mail</string>
     <string name="settings_alertDialog_account_deletion">Deletion of account cannot be undone. Proceed?</string>
     <string name="settings_alertDialog_positive_button">Done</string>
     <string name="settings_alertDialog_negative_button">Cancel</string>
@@ -71,6 +72,7 @@
     <string name="settings_toast_email_set">New email address</string>
     <string name="settings_toast_account_deleted">Account has been deleted</string>
     <string name="settings_toast_data_access_error">Error - cannot access data</string>
+    <string name="settings_toast_incorrect_password_length">Incorrect password length</string>
 
     <!-- Toolbar -->
     <string name="toolbar_title">Shopping list</string>

@@ -17,6 +17,7 @@ import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.UserModel
 import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
 import kotlinx.coroutines.*
+import java.util.regex.Pattern
 
 class SettingsActivity : AppCompatActivity() {
     private val context: AppCompatActivity = this
@@ -50,6 +51,9 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var emailSetToastMessage: String
     private lateinit var accountDeletedToastMessage: String
     private lateinit var dataAccessErrorToastMessage: String
+    private lateinit var noEmail: String
+    private lateinit var incorrectEmailFormatToastMessage: String
+    private lateinit var incorrectPasswordLengthToastMessage: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +88,9 @@ class SettingsActivity : AppCompatActivity() {
         emailSetToastMessage = getString(R.string.settings_toast_email_set)
         accountDeletedToastMessage = getString(R.string.settings_toast_account_deleted)
         dataAccessErrorToastMessage = getString(R.string.settings_toast_data_access_error)
+        noEmail = getString(R.string.login_no_email_object_value)
+        incorrectEmailFormatToastMessage = getString(R.string.signup_toast_incorrect_email_format)
+        incorrectPasswordLengthToastMessage = getString(R.string.settings_toast_incorrect_password_length)
 
         CoroutineScope(Dispatchers.Main).launch {
             user = withContext(Dispatchers.IO) {
@@ -92,6 +99,11 @@ class SettingsActivity : AppCompatActivity() {
 
             usernameTextView.text = user.username
             emailTextView.text = user.email
+
+            if (user.email == noEmail) {
+                changePasswordButton.isEnabled = false
+                changeEmailButton.isEnabled = false
+            }
         }
 
         changePasswordButton.setOnClickListener {
@@ -129,11 +141,17 @@ class SettingsActivity : AppCompatActivity() {
         builder.setView(input)
 
         builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
-            val newUser = UserModel(user.username, user.email, input.text.toString())
+            val newPassword = input.text.toString()
+            val newUser = UserModel(user.username, user.email, newPassword)
 
-            databaseManager.updateUser(user, newUser)
+            if (newPassword.length in 5..15) {
+                databaseManager.updateUser(user, newUser)
 
-            Toast.makeText(context, passwordSetToastMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, passwordSetToastMessage, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(context, incorrectPasswordLengthToastMessage, Toast.LENGTH_SHORT).show()
+            }
         }
 
         builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
@@ -156,11 +174,17 @@ class SettingsActivity : AppCompatActivity() {
         builder.setView(input)
 
         builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
-            val newUser = UserModel(user.username, input.text.toString(), user.password)
+            val newEmail = input.text.toString()
+            val newUser = UserModel(user.username, newEmail, user.password)
 
-            databaseManager.updateUser(user, newUser)
+            if (isValidEmail(newEmail)) {
+                databaseManager.updateUser(user, newUser)
 
-            Toast.makeText(context, "$emailSetToastMessage: ${input.text}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "$emailSetToastMessage: ${input.text}", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(context, incorrectEmailFormatToastMessage, Toast.LENGTH_SHORT).show()
+            }
         }
 
         builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
@@ -188,6 +212,19 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         builder.show()
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        val pattern = Pattern.compile(
+            "[a-zA-Z0-9+._%-+]{1,256}" +
+                    "@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9-]{0,64}" +
+                    "(" +
+                    "." +
+                    "[a-zA-Z0-9][a-zA-Z0-9-]{0,25}" +
+                    ")+"
+        )
+        return pattern.matcher(email).matches()
     }
 
     private fun switchBackActivity() {
