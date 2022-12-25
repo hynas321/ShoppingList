@@ -34,6 +34,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginWithoutAccountButton: Button
     private lateinit var editTextsWatcher: TextWatcher
 
+    private lateinit var toastLogInSuccessfulMessage: String
+    private lateinit var toastLogInUnsuccessfulMessage: String
+    private lateinit var toastLogInError: String
+    private lateinit var noEmail: String
+    private lateinit var noPassword: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -48,6 +54,12 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.login_button_login)
         signupButton = findViewById(R.id.login_button_signup)
         loginWithoutAccountButton = findViewById(R.id.login_button_offline)
+
+        toastLogInSuccessfulMessage = getString(R.string.login_toast_login_successful)
+        toastLogInUnsuccessfulMessage = getString(R.string.login_toast_login_unsuccessful)
+        toastLogInError = getString(R.string.login_toast_login_error)
+        noEmail = getString(R.string.login_no_email_object_value)
+        noPassword = getString(R.string.login_no_password_object_value)
 
         editTextsWatcher = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -95,11 +107,11 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (authenticated) {
-                Toast.makeText(context, "Nice to see you ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "$toastLogInSuccessfulMessage ${usernameEditText.text}", Toast.LENGTH_SHORT).show()
 
                 activityManager.startActivityWithResources(usernameEditText.text.toString(), ShoppingListActivity::class.java)
             } else {
-                Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, toastLogInUnsuccessfulMessage, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -109,8 +121,8 @@ class LoginActivity : AppCompatActivity() {
 
         val user = UserModel(
             androidId,
-            "No email",
-            "No password"
+            noEmail,
+            noPassword
         )
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -119,18 +131,16 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (userExists) {
-                Toast.makeText(context, "Nice to see you", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, toastLogInSuccessfulMessage, Toast.LENGTH_SHORT).show()
                 activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
             }
             else {
                 databaseManager.writeUser(user)
                     .addOnCompleteListener {
-                        Toast.makeText(context, "Nice to see you", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, toastLogInSuccessfulMessage, Toast.LENGTH_SHORT).show()
                         activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
-                    }.addOnCanceledListener {
-                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
-                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, toastLogInError, Toast.LENGTH_SHORT).show()
                     }
             }
         }

@@ -12,8 +12,8 @@ import kotlin.collections.ArrayList
 import com.google.firebase.database.DataSnapshot
 
 class DatabaseManager {
-    private var databaseReference: DatabaseReference =
-        FirebaseDatabase.getInstance("https://shoppinglist-9f095-default-rtdb.europe-west1.firebasedatabase.app/").reference
+    private val connectionString: String = "https://shoppinglist-9f095-default-rtdb.europe-west1.firebasedatabase.app/"
+    private var databaseReference = FirebaseDatabase.getInstance(connectionString).reference
 
     fun writeUser(user: UserModel): Task<Void> {
 

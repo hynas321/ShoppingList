@@ -2,7 +2,40 @@
     <!-- General -->
     <string name="app_name">ShoppingList</string>
 
-    <!-- Main activity -->
-    <string name="main_textView_title">Shopping lists</string>
-    <string name="main_button_add_list">New list</string>
+    <!-- Login Activity -->
+    <string name="login_editText_username">Username</string>
+    <string name="login_editText_password">Password</string>
+    <string name="login_button_login">Log in</string>
+    <string name="login_button_offline">Start without account</string>
+    <string name="login_button_signup">Sign up</string>
+    <!-- Pop-ups -->
+    <string name="login_toast_login_successful">Nice to see you</string>
+    <string name="login_toast_login_unsuccessful">Incorrect credentials</string>
+    <string name="login_toast_login_error">Log in error</string>
+    <!-- Other -->
+    <string name="login_no_email_object_value">No email</string>
+    <string name="login_no_password_object_value">No password</string>
+
+    <!-- SignUp Activity -->
+    <string name="signup_editText_email">E-mail</string>
+    <string name="signup_editText_username">Username</string>
+    <string name="signup_editText_password">Password</string>
+    <string name="signup_button">Sign up</string>
+
+    <!-- Shopping List Activity -->
+    <string name="shopping_list_editText_empty">There are no shopping lists to display</string>
+    <string name="shopping_list_button_add_list">New shopping list</string>
+
+    <!-- Product List Activity -->
+    <string name="product_list_editText_empty">There are no products to display</string>
+    <string name="product_list_button_add_product">New product</string>
+
+    <!-- Settings Activity -->
+    <string name="settings_textView_account_management">Account management</string>
+    <string name="settings_button_log_out">Log out</string>
+    <string name="settings_change_password_button">Change password</string>
+    <string name="settings_change_email_button">Change e-mail address</string>
+    <string name="settings_remove_account_button">Remove account</string>
+    <!-- Toolbar -->
+    <string name="toolbar_title">Shopping list</string>
 </resources>

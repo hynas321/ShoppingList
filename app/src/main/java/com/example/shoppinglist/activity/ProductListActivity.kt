@@ -21,7 +21,6 @@ import com.example.shoppinglist.model.ProductModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_product_list.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,7 +67,7 @@ class ProductListActivity : AppCompatActivity() {
         productListAdapter = ProductListAdapter(this, productModels, username, shoppingListName)
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addProductButton = findViewById(R.id.product_list_button_add_product)
-        noItemsTextView = findViewById(R.id.product_list_empty)
+        noItemsTextView = findViewById(R.id.product_list_editText_empty)
         navigationBar = findViewById(R.id.custom_navigation_bar_1)
         navigationBarSettingsButton = navigationBar.settings_icon
         recyclerView.layoutManager = linearLayoutManager
@@ -85,20 +84,20 @@ class ProductListActivity : AppCompatActivity() {
 
     private fun createItemAlertDialog() {
         val builder = AlertDialog.Builder(this)
-
         val nameInput = EditText(this)
+        val quantityInput = EditText(this)
+        val layout = LinearLayout(this)
+
         nameInput.hint = "Name"
         nameInput.inputType = InputType.TYPE_CLASS_TEXT
         nameInput.height = 150
         nameInput.gravity = Gravity.CENTER
 
-        val quantityInput = EditText(this)
         quantityInput.hint = "Quantity"
         quantityInput.inputType = InputType.TYPE_CLASS_TEXT
         quantityInput.height = 150
         quantityInput.gravity = Gravity.CENTER
 
-        val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
 
         builder.setTitle("Add a new product")

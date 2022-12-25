@@ -19,11 +19,9 @@ import com.example.shoppinglist.adapter.ShoppingListAdapter
 import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.ShoppingListModel
-import com.example.shoppinglist.property.DatabaseMainObject
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_product_list.view.*
 import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +64,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addListButton = findViewById(R.id.shopping_list_button_add_list)
-        noItemsTextView = findViewById(R.id.shopping_list_empty)
+        noItemsTextView = findViewById(R.id.shopping_list_editText_empty)
         navigationBar = findViewById(R.id.custom_navigation_bar_1)
         navigationBarSettingsButton = navigationBar.settings_icon
 

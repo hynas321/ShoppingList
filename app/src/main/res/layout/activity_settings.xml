@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.SettingsActivity">
 
-    <TextView
-        android:id="@+id/settings_email_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="E-mail:"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textView_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_username_textView" />
-
     <include
         android:id="@+id/include"
         layout="@layout/toolbar"
@@ -29,23 +16,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/custom_navigation_bar_2"
-        layout="@layout/custom_navigation_bar_2"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/settings_user_imageView"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:srcCompat="@drawable/ic_person"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/settings_email_imageView"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_user_imageView"
+        app:srcCompat="@drawable/ic_mail"
+        tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/settings_textView1"
+        android:id="@+id/settings_username_set_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="@dimen/textView_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintStart_toEndOf="@+id/settings_user_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <TextView
+        android:id="@+id/settings_email_set_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="@dimen/textView_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/settings_email_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/settings_username_set_textView"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/settings_textView_account_management"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginTop="12dp"
         android:background="@color/lightGreen"
         android:gravity="center"
-        android:text="Account management"
+        android:text="@string/settings_textView_account_management"
         android:textColor="@color/black"
         android:textSize="@dimen/textView_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,86 +82,64 @@
         app:layout_constraintTop_toBottomOf="@+id/settings_email_set_textView" />
 
     <Button
-        android:id="@+id/settings_button_log_out"
-        android:layout_width="315dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:text="Log out"
-        android:textSize="@dimen/button_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_remove_account_button" />
-
-    <Button
         android:id="@+id/settings_change_password_button"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:text="Change password"
+        android:layout_marginTop="4dp"
+        android:text="@string/settings_change_password_button"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/settings_textView_account_management" />
 
     <Button
         android:id="@+id/settings_change_email_button"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:text="Change Email"
+        android:layout_marginTop="4dp"
+        android:text="@string/settings_change_email_button"
         android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_change_password_button" />
 
     <Button
         android:id="@+id/settings_remove_account_button"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:text="Remove account"
+        android:layout_marginTop="8dp"
+        android:text="@string/settings_remove_account_button"
+        android:textColor="@color/red"
         android:textSize="@dimen/button_textSize"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_change_email_button" />
 
-    <TextView
-        android:id="@+id/settings_username_set_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Username"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textView_text"
+    <Button
+        android:id="@+id/settings_button_log_out"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/settings_button_log_out"
+        android:textColor="@color/yellow"
+        android:textSize="@dimen/button_textSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
-        app:layout_constraintStart_toEndOf="@+id/settings_username_textView"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
-
-    <TextView
-        android:id="@+id/settings_username_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Username:"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textView_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/settings_remove_account_button" />
 
-    <TextView
-        android:id="@+id/settings_email_set_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="E-mail"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textView_text"
-        app:layout_constraintStart_toEndOf="@+id/settings_email_textView"
-        app:layout_constraintTop_toBottomOf="@+id/settings_username_set_textView" />
+    <include
+        android:id="@+id/custom_navigation_bar_2"
+        layout="@layout/custom_navigation_bar_2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
