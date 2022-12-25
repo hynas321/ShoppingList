@@ -18,7 +18,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_list_recyclerView_product"
         android:layout_width="match_parent"
-        android:layout_height="485dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toTopOf="@+id/product_list_button_add_product"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

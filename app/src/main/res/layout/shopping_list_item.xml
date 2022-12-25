@@ -22,12 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10sp"
         android:text="aaa"
-        android:textSize="@dimen/toolbar_title_textSize" />
+        android:textSize="@dimen/textView_text_larger" />
 
     <ImageView
         android:id="@+id/imageView_trash_bin_icon"
-        android:layout_width="60sp"
-        android:layout_height="50sp"
+        android:layout_width="73dp"
+        android:layout_height="43dp"
         android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
         android:layout_weight="1"

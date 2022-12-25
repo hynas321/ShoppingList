@@ -2,5 +2,6 @@
 <resources>
     <dimen name="toolbar_title_textSize">28sp</dimen>
     <dimen name="textView_text">20sp</dimen>
+    <dimen name="textView_text_larger">25sp</dimen>
     <dimen name="button_textSize">16sp</dimen>
 </resources>

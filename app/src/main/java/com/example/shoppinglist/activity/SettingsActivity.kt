@@ -144,7 +144,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun displayRemoveAccountAlertDialog() {
         val builder = AlertDialog.Builder(context)
 
-        builder.setTitle("Would you like to delete your account?")
+        builder.setTitle("Deletion of account cannot be undone. Proceed?")
 
         builder.setPositiveButton("OK") { _, _ ->
             databaseManager.removeUser(username)

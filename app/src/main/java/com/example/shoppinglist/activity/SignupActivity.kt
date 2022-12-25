@@ -11,8 +11,14 @@ import com.example.shoppinglist.*
 import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.UserModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignupActivity: AppCompatActivity()  {
+    private val context: AppCompatActivity = this
+
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
 
@@ -21,8 +27,6 @@ class SignupActivity: AppCompatActivity()  {
     private lateinit var passwordEditText: EditText
     private lateinit var signupButton: Button
     private lateinit var editTextsWatcher: TextWatcher
-
-    val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,15 +62,26 @@ class SignupActivity: AppCompatActivity()  {
                 passwordEditText.text.toString()
             )
 
-            databaseManager.writeUser(user)
-                .addOnCompleteListener {
-                    Toast.makeText(context, "Welcome ${user.username}!", Toast.LENGTH_SHORT).show()
-                    activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
-                }.addOnCanceledListener {
-                    Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
-                }.addOnFailureListener {
-                    Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
+            CoroutineScope(Dispatchers.Main).launch {
+                val userExists = withContext(Dispatchers.IO) {
+                    databaseManager.checkIfUserExists(user.username).await()
                 }
+
+                if (userExists) {
+                    Toast.makeText(context, "User already exists", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    databaseManager.writeUser(user)
+                        .addOnCompleteListener {
+                            Toast.makeText(context, "Welcome ${user.username}!", Toast.LENGTH_SHORT).show()
+                            activityManager.startActivityWithResources(user.username, ShoppingListActivity::class.java)
+                        }.addOnCanceledListener {
+                            Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener {
+                            Toast.makeText(context, "Registration error", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
         }
     }
 }

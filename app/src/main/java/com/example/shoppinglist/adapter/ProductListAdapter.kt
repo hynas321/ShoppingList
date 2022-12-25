@@ -35,6 +35,9 @@ class ProductListAdapter(
             productQuantity = itemView.findViewById(R.id.textView_quantity)
             productTrashBinIcon = itemView.findViewById(R.id.imageView_trash_bin_icon)
 
+            productBoughtCheckBox.scaleX = 1.5F
+            productBoughtCheckBox.scaleY = 1.5F
+
             productTrashBinIcon.setOnClickListener {
                 val removedProduct = productModels[adapterPosition]
 

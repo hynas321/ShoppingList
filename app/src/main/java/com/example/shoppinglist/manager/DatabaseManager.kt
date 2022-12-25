@@ -258,6 +258,35 @@ class DatabaseManager {
     }.await()
 
     @OptIn(DelicateCoroutinesApi::class)
+    suspend fun getAllShoppingLists(username: String):
+            CompletableDeferred<ArrayList<ShoppingListModel>> = GlobalScope.async {
+        val deferred = CompletableDeferred<ArrayList<ShoppingListModel>>()
+        val shoppingLists = ArrayList<ShoppingListModel>()
+
+        databaseReference
+            .child(DatabaseMainObject.products)
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val shoppingList = childSnapshot.child("shoppingListName").value.toString()
+
+                        shoppingLists.add(ShoppingListModel(username, shoppingList))
+                    }
+
+                    deferred.complete(shoppingLists)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(shoppingLists)
+                }
+            })
+
+        deferred
+    }.await()
+
+    @OptIn(DelicateCoroutinesApi::class)
     suspend fun getAllProducts(username: String, shoppingListName: String):
             CompletableDeferred<ArrayList<ProductModel>> = GlobalScope.async {
         val deferred = CompletableDeferred<ArrayList<ProductModel>>()
@@ -292,35 +321,6 @@ class DatabaseManager {
     }.await()
 
     @OptIn(DelicateCoroutinesApi::class)
-    suspend fun getAllShoppingLists(username: String):
-            CompletableDeferred<ArrayList<ShoppingListModel>> = GlobalScope.async {
-        val deferred = CompletableDeferred<ArrayList<ShoppingListModel>>()
-        val shoppingLists = ArrayList<ShoppingListModel>()
-
-        databaseReference
-            .child(DatabaseMainObject.products)
-            .orderByChild("username")
-            .equalTo(username)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for (childSnapshot in snapshot.children) {
-                        val shoppingList = childSnapshot.child("shoppingListName").value.toString()
-
-                        shoppingLists.add(ShoppingListModel(username, shoppingList))
-                    }
-
-                    deferred.complete(shoppingLists)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    deferred.complete(shoppingLists)
-                }
-            })
-
-        deferred
-    }.await()
-
-    @OptIn(DelicateCoroutinesApi::class)
     suspend fun checkIfUserExists(username: String): CompletableDeferred<Boolean> = GlobalScope.async {
         val deferred = CompletableDeferred<Boolean>()
 
@@ -338,6 +338,69 @@ class DatabaseManager {
                             return
                         }
                     }
+
+                    deferred.complete(false)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(false)
+                }
+            })
+
+        deferred
+    }.await()
+
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun checkIfShoppingListExists(username: String, shoppingListName: String): CompletableDeferred<Boolean> = GlobalScope.async {
+        val deferred = CompletableDeferred<Boolean>()
+
+        databaseReference
+            .child(DatabaseMainObject.shoppingLists)
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val shoppingList = childSnapshot.child("shoppingListName").value.toString()
+
+                        if (shoppingList == shoppingListName) {
+                            deferred.complete(true)
+                            return
+                        }
+                    }
+
+                    deferred.complete(false)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.complete(false)
+                }
+            })
+
+        deferred
+    }.await()
+
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun checkIfProductExists(username: String, shoppingListName: String, productName: String): CompletableDeferred<Boolean> = GlobalScope.async {
+        val deferred = CompletableDeferred<Boolean>()
+
+        databaseReference
+            .child(DatabaseMainObject.products)
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val shoppingList = childSnapshot.child("shoppingListName").value.toString()
+                        val product = childSnapshot.child("productName").value.toString()
+
+                        if (shoppingList == shoppingListName && product == productName) {
+                            deferred.complete(true)
+                            return
+                        }
+                    }
+
+                    deferred.complete(false)
                 }
 
                 override fun onCancelled(error: DatabaseError) {

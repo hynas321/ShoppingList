@@ -14,9 +14,6 @@ import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.manager.InternetManager
 import com.example.shoppinglist.model.UserModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +21,8 @@ import kotlinx.coroutines.withContext
 
 
 class LoginActivity : AppCompatActivity() {
+    private val context: AppCompatActivity = this
+
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
     private lateinit var internetManager: InternetManager
@@ -34,8 +33,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var signupButton: Button
     private lateinit var loginWithoutAccountButton: Button
     private lateinit var editTextsWatcher: TextWatcher
-
-    val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

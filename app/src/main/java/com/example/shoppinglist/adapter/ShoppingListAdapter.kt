@@ -140,13 +140,13 @@ class ShoppingListAdapter(
         Toast.makeText(context, "Added ${item.shoppingListName}", Toast.LENGTH_SHORT).show()
     }
 
-    fun removeItem(position: Int) {
+    private fun removeItem(position: Int) {
         val shoppingList = shoppingListModels[position]
 
         databaseManager.removeShoppingList(username, shoppingList.shoppingListName)
     }
 
-    fun updateItem(item: ShoppingListModel, position: Int) {
+    private fun updateItem(item: ShoppingListModel, position: Int) {
         val shoppingList = shoppingListModels[position]
 
         databaseManager.updateShoppingList(username, shoppingList, item)

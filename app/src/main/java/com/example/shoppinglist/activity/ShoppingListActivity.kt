@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +24,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_product_list.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ShoppingListActivity : AppCompatActivity() {
@@ -80,15 +85,36 @@ class ShoppingListActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
-        builder.setTitle("Set name of your new shopping list")
-        input.hint = "Enter Text"
+        input.hint = "Enter name"
         input.inputType = InputType.TYPE_CLASS_TEXT
+        input.height = 150
+        input.gravity = Gravity.CENTER
+
+        builder.setTitle("Add a new shopping list")
         builder.setView(input)
 
         builder.setPositiveButton("OK") { _, _ ->
-            val shoppingList = ShoppingListModel(username, input.text.toString())
+            val shoppingListName = input.text.toString()
 
-            shoppingListAdapter.insertItem(shoppingList, null)
+            if (shoppingListName == "") {
+                Toast.makeText(context, "Cannot create the list with no name", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+
+            val shoppingList = ShoppingListModel(username, shoppingListName)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val shoppingListExists = withContext(Dispatchers.IO) {
+                    databaseManager.checkIfShoppingListExists(username, shoppingList.shoppingListName).await()
+                }
+
+                if (!shoppingListExists) {
+                    shoppingListAdapter.insertItem(shoppingList, null)
+                }
+                else {
+                    Toast.makeText(context, "Shopping list already exists", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         builder.setNegativeButton("Cancel") { dialog, _ ->
@@ -99,7 +125,6 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     private fun setShoppingListModelsChangeEvent() {
-
         databaseManager
             .getShoppingListsReference()
             .orderByChild("username")

@@ -22,9 +22,19 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_product_list.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import android.view.Gravity
+
+import android.widget.LinearLayout
+
+
+
 
 class ProductListActivity : AppCompatActivity() {
-    val context: AppCompatActivity = this
+    private val context: AppCompatActivity = this
 
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
@@ -75,19 +85,60 @@ class ProductListActivity : AppCompatActivity() {
         }
     }
 
-    fun createItemAlertDialog() {
-        val builder = AlertDialog.Builder(context)
-        val input = EditText(context)
+    private fun createItemAlertDialog() {
+        val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Set name of your new product")
-        input.hint = "Enter Text"
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
+        val nameInput = EditText(this)
+        nameInput.hint = "Name"
+        nameInput.inputType = InputType.TYPE_CLASS_TEXT
+        nameInput.height = 150
+        nameInput.gravity = Gravity.CENTER
+
+        val quantityInput = EditText(this)
+        quantityInput.hint = "Quantity"
+        quantityInput.inputType = InputType.TYPE_CLASS_TEXT
+        quantityInput.height = 150
+        quantityInput.gravity = Gravity.CENTER
+
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+
+        builder.setTitle("Add a new product")
+        layout.addView(nameInput)
+        layout.addView(quantityInput)
+        builder.setView(layout)
 
         builder.setPositiveButton("OK") { _, _ ->
-            val product = ProductModel(username, shoppingListName, input.text.toString(),"10", false)
+            val productName = nameInput.text.toString()
+            var productQuantity = quantityInput.text.toString()
 
-            productListAdapter.insertItem(product)
+            if (productName == "") {
+                Toast.makeText(context, "Cannot create the product with no name", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+            if (productQuantity == "") {
+                productQuantity = "No quantity"
+            }
+            else {
+                productQuantity = "Quantity: $productQuantity"
+            }
+
+            val product =
+                ProductModel(username, shoppingListName, productName,
+                    productQuantity, false)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val productExists = withContext(Dispatchers.IO) {
+                    databaseManager.checkIfProductExists(username, shoppingListName, product.productName).await()
+                }
+
+                if (!productExists) {
+                    productListAdapter.insertItem(product)
+                }
+                else {
+                    Toast.makeText(context, "Product already exists", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         builder.setNegativeButton("Cancel") { dialog, _ ->
