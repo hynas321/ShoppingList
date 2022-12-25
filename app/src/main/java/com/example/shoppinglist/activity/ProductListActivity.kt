@@ -170,7 +170,7 @@ class ProductListActivity : AppCompatActivity() {
                             productModels.add(productModel)
                         }
                     }
-
+                    productModels.sortWith(compareBy {it.productName} )
                     productListAdapter.notifyDataSetChanged()
 
                     if (productModels.isEmpty()) {

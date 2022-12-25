@@ -80,6 +80,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         logOutButton.setOnClickListener {
+            Toast.makeText(context, "You have logged out", Toast.LENGTH_SHORT).show()
             activityManager.startActivityWithResources("", LoginActivity::class.java)
         }
 
@@ -159,5 +160,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         builder.show()
+    }
+
+    override fun onBackPressed() {
+        overridePendingTransition(0, 0)
     }
 }

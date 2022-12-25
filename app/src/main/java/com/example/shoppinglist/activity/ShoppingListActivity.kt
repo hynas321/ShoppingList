@@ -142,6 +142,7 @@ class ShoppingListActivity : AppCompatActivity() {
                         shoppingListModels.add(shoppingListModel)
                     }
 
+                    shoppingListModels.sortWith(compareBy {it.shoppingListName} )
                     shoppingListAdapter.notifyDataSetChanged()
 
                     if (shoppingListModels.isEmpty()) {
