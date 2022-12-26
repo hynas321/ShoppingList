@@ -79,9 +79,9 @@ class SignupActivity: AppCompatActivity()  {
 
         signupButton.setOnClickListener {
             val user = UserModel(
-                usernameEditText.text.toString(),
-                emailEditText.text.toString(),
-                passwordEditText.text.toString()
+                usernameEditText.text.toString().trim(),
+                emailEditText.text.toString().trim(),
+                passwordEditText.text.toString().trim()
             )
 
             if (!isValidEmail(emailEditText.text.toString())) {
