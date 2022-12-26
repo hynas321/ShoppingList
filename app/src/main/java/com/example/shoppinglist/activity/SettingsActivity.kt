@@ -16,6 +16,7 @@ import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.UserModel
 import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
+import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.coroutines.*
 import java.util.regex.Pattern
 
@@ -30,6 +31,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var shoppingListName: String
     private lateinit var previousActivityName: String
 
+    private lateinit var toolbar: View
+    private lateinit var toolbarTitle: TextView
     private lateinit var usernameTextView: TextView
     private lateinit var emailTextView: TextView
     private lateinit var removeAccountButton: Button
@@ -67,6 +70,8 @@ class SettingsActivity : AppCompatActivity() {
         shoppingListName = intent.getStringExtra("string2").toString()
         previousActivityName = intent.getStringExtra("string3").toString()
 
+        toolbar = findViewById(R.id.settings_toolbar)
+        toolbarTitle = toolbar.toolbar_title
         usernameTextView = findViewById(R.id.settings_username_set_textView)
         emailTextView = findViewById(R.id.settings_email_set_textView)
         changePasswordButton = findViewById(R.id.settings_change_password_button)
@@ -91,6 +96,8 @@ class SettingsActivity : AppCompatActivity() {
         noEmail = getString(R.string.login_no_email_object_value)
         incorrectEmailFormatToastMessage = getString(R.string.signup_toast_incorrect_email_format)
         incorrectPasswordLengthToastMessage = getString(R.string.settings_toast_incorrect_password_length)
+
+        toolbarTitle.text = getString(R.string.settings_title)
 
         CoroutineScope(Dispatchers.Main).launch {
             user = withContext(Dispatchers.IO) {

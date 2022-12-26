@@ -179,6 +179,10 @@ class DatabaseManager {
             "shoppingListName" to newShoppingList.shoppingListName
         )
 
+        val productValues = mapOf(
+            "shoppingListName" to newShoppingList.shoppingListName
+        )
+
         databaseReference
             .child(DatabaseMainObject.shoppingLists)
             .orderByChild("username")
@@ -192,6 +196,25 @@ class DatabaseManager {
                         if (shoppingListName == oldShoppingList.shoppingListName) {
                             databaseReference.child(DatabaseMainObject.shoppingLists).child(key).updateChildren(shoppingListValues)
                             return
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+        databaseReference
+            .child(DatabaseMainObject.products)
+            .orderByChild("username")
+            .equalTo(username)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (childSnapshot in snapshot.children) {
+                        val key = childSnapshot.key.toString()
+                        val shoppingListName = childSnapshot.child("shoppingListName").value.toString()
+
+                        if (shoppingListName == oldShoppingList.shoppingListName) {
+                            databaseReference.child(DatabaseMainObject.products).child(key).updateChildren(productValues)
                         }
                     }
                 }

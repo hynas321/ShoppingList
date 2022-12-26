@@ -7,7 +7,7 @@
     tools:context=".activity.ProductListActivity">
 
     <include
-        android:id="@+id/toolbar_product_list"
+        android:id="@+id/product_list_toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_product_list"
+        app:layout_constraintTop_toBottomOf="@+id/product_list_toolbar"
         app:layout_constraintVertical_bias="0.300" />
 
     <TextView
@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_product_list"
+        app:layout_constraintTop_toBottomOf="@+id/product_list_toolbar"
         app:layout_constraintVertical_bias="0.591" />
 
     <Button

@@ -1,7 +1,7 @@
 package com.example.shoppinglist.adapter
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.AlertDialog.Builder
 import android.content.Context
 import android.text.InputType
 import android.view.*
@@ -32,11 +32,12 @@ class ShoppingListAdapter(
     private val undoMessage: String = context.getString(R.string.adapter_message_undo)
     private val addedMessage: String = context.getString(R.string.adapter_message_added)
     private val removedMessage: String = context.getString(R.string.adapter_message_removed)
-    private val renamedMessage: String = context.getString(R.string.adapter_message_renamed)
+    private val renamedMessage: String = context.getString(R.string.adapter_toast_renamed)
     private val positiveButtonAlertDialog: String = context.getString(R.string.shopping_list_alertDialog_positive_button)
     private val negativeButtonAlertDialog: String = context.getString(R.string.shopping_list_alertDialog_negative_button)
     private val renameShoppingListTitleAlertDialog: String = context.getString(R.string.adapter_alertDialog_rename_shopping_list)
     private val nameShoppingListHintAlertDialog: String = context.getString(R.string.adapter_alertDialog_new_shopping_list_name)
+    private val shoppingListExistsToastMessage: String = context.getString(R.string.shopping_list_toast_shopping_list_exists)
 
     inner class ShoppingListViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
@@ -96,9 +97,7 @@ class ShoppingListAdapter(
             }
 
             R.id.shopping_list_menu_rename -> {
-                val renamedShoppingList = shoppingListModels[position]
-
-                showRenameShoppingListAlertDialog(position, itemView, renamedShoppingList)
+                showRenameShoppingListAlertDialog(position)
 
                 return true
             }
@@ -107,27 +106,39 @@ class ShoppingListAdapter(
         }
     }
 
-    private fun showRenameShoppingListAlertDialog(position: Int, itemView: View, shoppingList: ShoppingListModel) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showRenameShoppingListAlertDialog(position: Int) {
         val builder = AlertDialog.Builder(context)
         val input = EditText(context)
 
-        builder.setTitle(renameShoppingListTitleAlertDialog)
         input.hint = nameShoppingListHintAlertDialog
         input.inputType = InputType.TYPE_CLASS_TEXT
+        input.height = 150
+        input.gravity = Gravity.CENTER
+
+        builder.setTitle(renameShoppingListTitleAlertDialog)
         builder.setView(input)
 
         builder.setPositiveButton(positiveButtonAlertDialog) { _, _ ->
-            val changedShoppingList = shoppingListModels[position]
+            val oldShoppingList = shoppingListModels[position]
+            val changedShoppingList = ShoppingListModel(oldShoppingList.username, input.text.toString())
 
-            changedShoppingList.shoppingListName = input.text.toString()
+            CoroutineScope(Dispatchers.Main).launch {
+                val shoppingListExists = withContext(Dispatchers.IO) {
+                    databaseManager.checkIfShoppingListExists(username, changedShoppingList.shoppingListName).await()
+                }
 
-            databaseManager.updateShoppingList(username, shoppingList, changedShoppingList)
+                if (!shoppingListExists) {
+                    databaseManager.updateShoppingList(username, oldShoppingList, changedShoppingList)
+                    notifyDataSetChanged()
 
-            Snackbar
-                .make(itemView, "$renamedMessage " + shoppingList.shoppingListName, Snackbar.LENGTH_LONG)
-                .setAction(undoMessage) { updateItem(shoppingList, position) }
-                .show()
-
+                    Toast.makeText(context, "$renamedMessage: ${changedShoppingList.shoppingListName}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                else {
+                    Toast.makeText(context, shoppingListExistsToastMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         builder.setNegativeButton(negativeButtonAlertDialog) { dialog, _ ->
@@ -153,12 +164,6 @@ class ShoppingListAdapter(
         val shoppingList = shoppingListModels[position]
 
         databaseManager.removeShoppingList(username, shoppingList.shoppingListName)
-    }
-
-    private fun updateItem(item: ShoppingListModel, position: Int) {
-        val shoppingList = shoppingListModels[position]
-
-        databaseManager.updateShoppingList(username, shoppingList, item)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ShoppingListViewHolder {

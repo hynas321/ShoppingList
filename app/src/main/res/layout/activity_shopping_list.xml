@@ -7,7 +7,7 @@
     tools:context=".activity.ShoppingListActivity">
 
     <include
-        android:id="@+id/toolbar_shopping_list"
+        android:id="@+id/shopping_list_toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_shopping_list"
+        app:layout_constraintTop_toBottomOf="@+id/shopping_list_toolbar"
         app:layout_constraintVertical_bias="0.300" />
 
     <TextView
@@ -32,13 +32,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="212dp"
         android:text="@string/shopping_list_editText_empty"
-        android:textSize="@dimen/textView_text"
         android:textAlignment="center"
+        android:textSize="@dimen/textView_text"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/product_list_recyclerView_product"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_shopping_list"
+        app:layout_constraintTop_toBottomOf="@+id/shopping_list_toolbar"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
@@ -52,6 +52,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/shopping_list_microphone_imageView"
+        android:layout_width="55dp"
+        android:layout_height="59dp"
+        android:layout_above="@+id/shopping_list_button_add_list"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/shopping_list_button_add_list"
+        app:layout_constraintEnd_toEndOf="@+id/shopping_list_button_add_list"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/shopping_list_button_add_list"
+        app:layout_constraintTop_toTopOf="@+id/shopping_list_button_add_list"
+        app:srcCompat="@drawable/ic_microphone"
+        tools:ignore="ContentDescription" />
 
     <include
         android:id="@+id/custom_navigation_bar_1"
@@ -61,5 +74,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

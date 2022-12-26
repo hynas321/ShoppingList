@@ -3,14 +3,17 @@ package com.example.shoppinglist.activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shoppinglist.*
 import com.example.shoppinglist.manager.ActivityManager
 import com.example.shoppinglist.manager.DatabaseManager
 import com.example.shoppinglist.model.UserModel
+import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +26,8 @@ class SignupActivity: AppCompatActivity()  {
     private lateinit var databaseManager: DatabaseManager
     private lateinit var activityManager: ActivityManager
 
+    private lateinit var toolbar: View
+    private lateinit var toolbarTitle: TextView
     private lateinit var emailEditText: EditText
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -42,6 +47,8 @@ class SignupActivity: AppCompatActivity()  {
         databaseManager = DatabaseManager()
         activityManager = ActivityManager(this)
 
+        toolbar = findViewById(R.id.signup_toolbar)
+        toolbarTitle = toolbar.toolbar_title
         emailEditText = findViewById(R.id.signup_editText_email)
         usernameEditText = findViewById(R.id.signup_editText_username)
         passwordEditText = findViewById(R.id.signup_editText_password)
@@ -51,6 +58,8 @@ class SignupActivity: AppCompatActivity()  {
         registrationSuccessfulToastMessage = getString(R.string.signup_toast_registration_successful)
         registrationErrorToastMessage = getString(R.string.signup_toast_registration_error)
         incorrectEmailFormatToastMessage = getString(R.string.signup_toast_incorrect_email_format)
+
+        toolbarTitle.text = getString(R.string.signup_title)
 
         editTextsWatcher = object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

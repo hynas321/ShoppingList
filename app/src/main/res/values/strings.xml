@@ -2,6 +2,13 @@
     <!-- General -->
     <string name="app_name">ShoppingList</string>
 
+    <!-- Toolbar titles -->
+    <string name="toolbar_title">Shopping list</string>
+    <string name="login_title">Log in</string>
+    <string name="signup_title">Sign up</string>
+    <string name="shopping_list_title">Shopping lists</string>
+    <string name="settings_title">Settings</string>
+
     <!-- Login Activity -->
     <string name="login_editText_username">Username</string>
     <string name="login_editText_password">Password</string>
@@ -74,17 +81,14 @@
     <string name="settings_toast_data_access_error">Error - cannot access data</string>
     <string name="settings_toast_incorrect_password_length">Incorrect password length</string>
 
-    <!-- Toolbar -->
-    <string name="toolbar_title">Shopping list</string>
-
     <!-- Internet Manager -->
     <string name="internet_manager_no_internet_access">No internet access</string>
 
     <!-- Adapters -->
     <string name="adapter_message_undo">Undo</string>
-    <string name="adapter_message_renamed">Renamed</string>
     <string name="adapter_message_removed">Removed</string>
     <string name="adapter_message_added">Added</string>
+    <string name="adapter_toast_renamed">Shopping list has been renamed to</string>
     <string name="adapter_alertDialog_rename_shopping_list">Rename your shopping list</string>
     <string name="adapter_alertDialog_new_shopping_list_name">New name</string>
 </resources>

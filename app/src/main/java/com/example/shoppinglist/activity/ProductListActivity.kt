@@ -29,6 +29,7 @@ import android.view.Gravity
 
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.custom_navigation_bar_1.view.*
+import kotlinx.android.synthetic.main.toolbar.view.*
 
 
 class ProductListActivity : AppCompatActivity() {
@@ -41,6 +42,8 @@ class ProductListActivity : AppCompatActivity() {
     private lateinit var username: String
     private lateinit var shoppingListName: String
 
+    private lateinit var toolbar: View
+    private lateinit var toolbarTitle: TextView
     private lateinit var productListAdapter: ProductListAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -76,6 +79,9 @@ class ProductListActivity : AppCompatActivity() {
 
         linearLayoutManager = LinearLayoutManager(this)
         productListAdapter = ProductListAdapter(this, productModels, username, shoppingListName)
+
+        toolbar = findViewById(R.id.product_list_toolbar)
+        toolbarTitle = toolbar.toolbar_title
         recyclerView = findViewById(R.id.product_list_recyclerView_product)
         addProductButton = findViewById(R.id.product_list_button_add_product)
         noItemsTextView = findViewById(R.id.product_list_editText_empty)
@@ -94,6 +100,8 @@ class ProductListActivity : AppCompatActivity() {
         noProductNameToastMessage = getString(R.string.product_toast_no_product_name)
         productExistsToastMessage = getString(R.string.product_toast_product_exists)
         dataAccessErrorToastMessage = getString(R.string.product_toast_data_access_error)
+
+        toolbarTitle.text = shoppingListName
 
         addProductButton.setOnClickListener {
             createItemAlertDialog()
