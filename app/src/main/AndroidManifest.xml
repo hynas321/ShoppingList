@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <application
+        android:name=".manager.ApplicationLaunchHandler"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,19 +17,28 @@
         android:theme="@style/Theme.ShoppingList"
         tools:targetApi="31">
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".activities.ShoppingListActivity" />
-        <activity android:name=".activities.ProductListActivity" />
+        <activity android:name=".activity.SignupActivity" />
+        <activity
+            android:name=".activity.ShoppingListActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.ProductListActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:windowSoftInputMode="adjustNothing" />
     </application>
 
 </manifest>

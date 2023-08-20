@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:id="@+id/custom_navigation_bar"
-        android:layout_width="410dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,16 +20,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="List"
-            app:srcCompat="@drawable/ic_list" />
+            app:srcCompat="@drawable/ic_list"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/settings_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="Settings"
-            app:srcCompat="@drawable/ic_settings" />
+            app:srcCompat="@drawable/ic_settings_active"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

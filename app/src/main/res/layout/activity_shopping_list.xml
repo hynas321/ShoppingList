@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ShoppingListActivity">
+    tools:context=".activity.ShoppingListActivity">
 
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/shopping_list_toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -17,30 +17,63 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_list_recyclerView_product"
-        android:layout_width="347dp"
-        android:layout_height="532dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toTopOf="@+id/shopping_list_button_add_list"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/shopping_list_toolbar"
+        app:layout_constraintVertical_bias="0.300" />
+
+    <TextView
+        android:id="@+id/shopping_list_editText_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="212dp"
+        android:text="@string/shopping_list_editText_empty"
+        android:textAlignment="center"
+        android:textSize="@dimen/textView_text"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/product_list_recyclerView_product"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shopping_list_toolbar"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/shopping_list_button_add_list"
-        android:layout_width="200dp"
+        android:layout_width="315dp"
         android:layout_height="60dp"
-        android:text="@string/main_button_add_list"
+        android:layout_marginBottom="56dp"
+        android:text="@string/shopping_list_button_add_list"
         android:textSize="@dimen/button_textSize"
-        app:layout_constraintBottom_toTopOf="@+id/custom_navigation_bar"
+        app:layout_constraintBottom_toTopOf="@+id/custom_navigation_bar_1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/shopping_list_microphone_imageView"
+        android:layout_width="55dp"
+        android:layout_height="59dp"
+        android:layout_above="@+id/shopping_list_button_add_list"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/shopping_list_button_add_list"
+        app:layout_constraintEnd_toEndOf="@+id/shopping_list_button_add_list"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/shopping_list_button_add_list"
+        app:layout_constraintTop_toTopOf="@+id/shopping_list_button_add_list"
+        app:srcCompat="@drawable/ic_microphone"
+        tools:ignore="ContentDescription" />
+
     <include
-        android:id="@+id/custom_navigation_bar"
-        layout="@layout/custom_navigation_bar"
-        android:layout_width="393dp"
-        android:layout_height="67dp"
+        android:id="@+id/custom_navigation_bar_1"
+        layout="@layout/custom_navigation_bar_1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

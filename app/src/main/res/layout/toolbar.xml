@@ -8,7 +8,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,12 +17,13 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Shopping list app"
-            android:textColor="@color/white"
+            android:text="@string/toolbar_title"
+            android:textStyle="bold"
+            android:textColor="@color/lime"
             android:textSize="32sp" />
 
     </androidx.appcompat.widget.Toolbar>

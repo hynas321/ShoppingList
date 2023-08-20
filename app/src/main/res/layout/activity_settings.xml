@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SettingsActivity">
+
+    <include
+        android:id="@+id/settings_toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/settings_user_imageView"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar"
+        app:srcCompat="@drawable/ic_person"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/settings_email_imageView"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_user_imageView"
+        app:srcCompat="@drawable/ic_mail"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/settings_username_set_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="@dimen/textView_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintStart_toEndOf="@+id/settings_user_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar" />
+
+    <TextView
+        android:id="@+id/settings_email_set_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="64dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="@dimen/textView_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/settings_email_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/settings_textView_account_management"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/lightGreen"
+        android:gravity="center"
+        android:text="@string/settings_textView_account_management"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textView_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_email_set_textView" />
+
+    <Button
+        android:id="@+id/settings_change_password_button"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/settings_change_password_button"
+        android:textSize="@dimen/button_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_textView_account_management" />
+
+    <Button
+        android:id="@+id/settings_change_email_button"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/settings_change_email_button"
+        android:textSize="@dimen/button_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_change_password_button" />
+
+    <Button
+        android:id="@+id/settings_remove_account_button"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/settings_remove_account_button"
+        android:textColor="@color/red"
+        android:textSize="@dimen/button_textSize"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_change_email_button" />
+
+    <Button
+        android:id="@+id/settings_button_log_out"
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/settings_button_log_out"
+        android:textColor="@color/yellow"
+        android:textSize="@dimen/button_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_remove_account_button" />
+
+    <include
+        android:id="@+id/custom_navigation_bar_2"
+        layout="@layout/custom_navigation_bar_2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
