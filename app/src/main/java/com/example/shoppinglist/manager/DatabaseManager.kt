@@ -10,9 +10,16 @@ import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 import com.google.firebase.database.DataSnapshot
+import java.util.Properties
 
 class DatabaseManager {
-    private val connectionString: String = "https://shoppinglist-9f095-default-rtdb.europe-west1.firebasedatabase.app/"
+    private val configFile = javaClass.classLoader?.getResourceAsStream("config.properties")
+    private val properties = Properties().apply {
+        configFile?.use { inputStream ->
+            load(inputStream)
+        }
+    }
+    private val connectionString: String = properties.getProperty("connection.string")
     private var databaseReference = FirebaseDatabase.getInstance(connectionString).reference
 
     fun writeUser(user: UserModel): Task<Void> {
